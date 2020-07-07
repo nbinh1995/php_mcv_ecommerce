@@ -1,0 +1,84 @@
+.footer-top{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: space-around;
+    background-color: black;
+    color: white;
+    padding: 0.5rem;
+}
+.footer-top h3{
+    font-size: 1rem;
+    font-weight: 300;
+    text-transform: capitalize ;
+}
+.footer-top h3 span{
+    color: bisque;
+}
+.footer-top h3:first-child i{
+    transform: rotateY(-180deg);
+}
+.footer-mid{
+    width: 100%;
+    color: black;
+    opacity: 0.9;
+}
+.footer-mid >ul {
+    display: flex;
+    justify-content: space-around;
+    text-transform: capitalize;
+}
+.footer-mid a{
+    color: black;
+    font-weight: 450;
+    opacity: 0.8;
+}
+.footer-mid h2{
+    /* text-transform: uppercase; */
+    text-align: center;
+}
+.ft-categories{
+    text-align: center;
+}
+.footer-mid >ul >li:first-child ul{
+    display: flex;
+    text-align: center;
+}
+.footer-mid ul li{
+    padding-left:1rem;
+    padding-right:1rem;
+}
+.footer-mid >ul >li{
+    padding-top:1rem;
+    padding-bottom:1rem ;
+}
+.footer-mid a:hover{
+    opacity: 1;
+}
+.footer-mid h5{
+    font-weight: 500;
+}
+.footer-bot{
+    text-align: center;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    background-color: black;
+    color: white;
+}
+.footer-bot h4{
+    font-weight: 600;
+}
+
+@media screen and (max-width: 900px){
+.footer-top{
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+.footer-mid >ul {
+   flex-direction: column;
+   width: 100%;
+   text-align: center;
+   justify-content: center;
+   align-items: center;
+}
+}

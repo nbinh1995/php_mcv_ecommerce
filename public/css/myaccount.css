@@ -1,0 +1,89 @@
+.detail-container{
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+}
+.detail-container h1{
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    margin-top:2rem;
+    font-weight: 500;
+}
+.detail-container p{
+    font-size: 0.8rem;
+}
+.detail-wrap, .detail-wrap-left, .detail-wrap-right{
+    display: flex;
+    width: 100%;
+}
+.detail-wrap-left, .detail-wrap-right{
+    flex-direction: column;
+    justify-content: center;
+}
+.detail-wrap input:not([type='submit']){
+    width: 90%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #dddddd;
+    outline: none;
+}
+.err{
+    color: red;
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+.info{
+    width: 90%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #dddddd;
+    font-size: 0.75rem;
+
+}
+.change-pass{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+.detail-wrap .detail-wrap-left .change-pass .toggle{
+    /* width: 100%; */
+    transition: opacity 1s ease-in-out;
+}
+.detail-wrap .detail-wrap-left .change-pass label{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.detail-wrap .detail-wrap-left .change-pass label:hover{
+    text-decoration: none;
+    opacity: 0.9;
+}
+.in-change{
+    display: flex;
+}
+#change~ .toggle{
+    opacity: 0;
+}
+#change:checked~ .toggle{
+    opacity: 1;
+}
+.detail-container-btn{
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+}
+.detail-container-btn input{
+    background: #555;
+    color: #FFF;
+    border-bottom: 4px solid #1D1C1C;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+}
+.err{
+    color: red;
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+

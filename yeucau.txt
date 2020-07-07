@@ -1,0 +1,10 @@
+﻿1	Quản Lý Sản Phẩm (CRUD)
+2	Trang chủ hiển thị các sản phẩm nổi bật
+3	Trang chủ hiển thị các sản phẩm bán chạy
+4	Tìm kiếm sản phẩm theo tên sản phẩm
+5	Quản lý thể loại sản phẩm (CRUD)
+6	Click vào 1 sản phẩm hiển thị detail sản phẩm
+7	Quản lý giỏ hàng (Clear giỏ hàng, thêm 1 sản phẩm vào giỏ hàng, checkout giỏ hàng)
+8	Click thể loại hiển thị các sản phẩm theo thể loại
+9	Chức năng login, logout
+10	Trang chủ hiển thị rõ ràng, nhìn đẹp, các hiệu ứng bắt mắt (UI/UX)

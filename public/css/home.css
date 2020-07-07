@@ -1,0 +1,107 @@
+@import url('thumbnail.css');
+.js-banner-wrap{
+    display: none;
+    width: 80%;
+    margin: 0 auto;
+}
+.slider-left{
+    width: 70%;
+    opacity: 90%;
+}
+.slider-right{
+    width: 30%;
+    margin-top: 5rem;
+    text-align: right;
+}
+.slider-right h1{
+    color: #000;
+    font-size: 4rem;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+.slider-right h2{
+    color: #000;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+.slider-right p{
+    color: #999;
+    font-size: 0.85rem;
+    padding-bottom: 1rem;
+}
+.btn a{
+    border: 1px solid #ddd;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 30px;
+    display: inline-block;
+    font-size: 0.85em;
+    outline: none;
+    transition: all 0.3s;
+    background: #FFF;
+}
+.btn i{
+    font-size: 0.85em;
+}
+/* social */
+.wrap-social{
+    display: flex;
+    padding: 1rem 0;
+}
+.left-social, .right-social{
+    display: flex;
+    flex-basis: 50%;
+    justify-content: space-around;
+}
+.item-social{
+    display: flex;
+    align-items: center;
+}
+.item-social i{
+    padding: 1.2rem;
+    border-radius: 50%;
+    border: 2px solid #999;
+    font-size: 1.5rem;
+    color: #999;
+}
+
+.item-social i:hover{
+    color: #000;
+    border-color: #000;
+    opacity: 80%;
+}
+.item-social img{
+    margin-left: -15px;
+    width: 1.5rem;
+    height: auto;
+}
+.left-social .item-social:first-child i{
+    padding: 1.2rem 1.6rem;
+}
+.num{
+    padding: 0 5vw;
+    border-bottom: 1px solid black;
+    margin-left: -7px;
+}
+
+@media screen and (max-width: 900px){
+    .js-banner-wrap{
+      flex-direction: column;
+      text-align: center;
+    }
+    .slider-left{
+        width: 100%;
+    }
+    .slider-right{
+        width: 100%;
+        margin-top: 0;
+        text-align: center;
+    }
+    .wrap-social{
+        flex-flow: wrap;
+    }
+    .left-social, .right-social{
+        flex-basis: 100%;
+    }
+}
