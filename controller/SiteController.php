@@ -31,7 +31,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         return view('site/home/home',$data);
@@ -43,7 +43,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
             return view('site/home/home');
             exit;
@@ -71,7 +71,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         $data['err'] = $err;
@@ -91,7 +91,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
             return view('site/user/myaccount',$data);
             exit();
@@ -104,7 +104,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         return view('site/shop/shop',$data);
@@ -115,7 +115,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         return view('site/shop/single',$data);
@@ -126,7 +126,7 @@ class controller_SiteController
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readCRUD($_SESSION["id"]);
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         return view('site/shop/checkout',$data);

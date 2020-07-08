@@ -90,7 +90,7 @@ class model_UserDAO
         $stmt->bindParam(2, $user->id);
         return $stmt->execute();
     }
-    public function readCRUD($id){
+    public function readIdCRUD($id){
         $sql = "Select * from user where `id`=?";
        $stmt = $this->pdo->prepare($sql);
        $stmt->bindParam(1,$id);

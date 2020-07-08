@@ -211,12 +211,10 @@ class controller_UserController
          session_start();
       }
       if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-         $user = $userDAO->readCRUD($_SESSION["id"]);
-         var_dump($user);
+         $user = $userDAO->readIdCRUD($_SESSION["id"]);
          if (empty($err['email']) && empty($err['password'])) {
             if ($user->password === md5($old_pass)) {
                $user->password = $new_pass;
-               var_dump($user);
                if ($userDAO->changePass($user)) {
                   $this->logout();
                   exit();
