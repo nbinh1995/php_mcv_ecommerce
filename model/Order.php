@@ -8,5 +8,6 @@ class model_Order{
     public $total_order=null;
     public $status=null;
     public $create_order=null;
+    public $is_delete = 0;
 }
 ?>

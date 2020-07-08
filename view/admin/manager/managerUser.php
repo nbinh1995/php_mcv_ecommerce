@@ -85,13 +85,13 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="adProduct" class="nav-link active">
+                  <a href="adProduct" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Product</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="adUser" class="nav-link">
+                  <a href="adUser" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Users</p>
                   </a>
@@ -118,12 +118,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>ProductTables</h1>
+              <h1>UserTables</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">ProductTables</li>
+                <li class="breadcrumb-item active">UserTables</li>
               </ol>
             </div>
           </div>
@@ -137,7 +137,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">ProductTable with default features</h3>
+                  <h3 class="card-title">UserTable with default features</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -146,37 +146,29 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Categories Detail ID</th>
+                        <th>Categories ID</th>
                         <th>Item Name</th>
-                        <th>Content</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Is New</th>
-                        <th>Is Hot</th>
-                        <th>Create Date</th>
-                        <th>Images</th>
                         <th>Function</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for ($i = 0; $i < count($product); $i++) : ?>
+                      <?php for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
                         <tr>
-                          <td><?= $product[$i]->id ?></td>
-                          <td><?= $product[$i]->categories_detail_id?></td>
-                          <td><?= $product[$i]->name ?></td>
-                          <td><?= $product[$i]->content ?></td>
-                          <td><?= $product[$i]->price?></td>
-                          <td><?= $product[$i]->$discount ?></td>
-                          <td><?= $product[$i]->isNew?></td>
-                          <td><?= $product[$i]->isHot?></td>
-                          <td><?= $product[$i]->created ?></td>
-                          <td>
-                            <?php 
-                            foreach ($img_product as $img){
-                              echo $img[$i]->img.'<br>';
-                            }
-                             ?>
-                          </td>
+                          <td><?= $categoriesDetail[$i]->id ?></td>
+                          <td><?php
+                              switch ($categoriesDetail[$i]->categories_id) {
+                                case 1:
+                                  echo 'Nam';
+                                  break;
+                                case 2:
+                                  echo 'Nữ';
+                                  break;
+                                case 3:
+                                  echo 'Trẻ em';
+                                  break;
+                              }
+                              ?></td>
+                          <td><?= $categoriesDetail[$i]->item_name ?></td>
                           <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
                             <a class="btn btn-danger btn-sm" href="delete?id=<?= $categoriesDetail[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>

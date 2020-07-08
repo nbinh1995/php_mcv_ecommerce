@@ -33,8 +33,9 @@ class core_libs_Router {
                 ...explode('@', $this->routes[$requestType][$uri])
             );
         }
-        return view('layout/404');
-        throw new Exception('Route khong xac dinh');
+        $err = 'Undefine Router';
+        return view('layout/404',['err'=>$err]);
+        // throw new Exception('Route khong xac dinh');
         
     }
 
@@ -45,11 +46,9 @@ class core_libs_Router {
         $controller = new $controller;
         
         if (! method_exists($controller, $action)) {
-            return view('layout/404');
-            throw new Exception(
-                "{$controller} does not respond to the {$action} action."
-            );
-            
+            $err = "{$controller} does not respond to the {$action} action.";
+            return view('layout/404',['err'=>$err]);
+            // throw new Exception("{$controller} does not respond to the {$action} action.");
         }
 
         return $controller->$action();

@@ -28,7 +28,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="admin" method="post">
+      <form action="dashboard" method="post">
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="email" placeholder="Email">
           <div class="input-group-append">
@@ -45,15 +45,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div>
+        <div class="row" style="justify-content: center;">
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>

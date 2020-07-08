@@ -42,14 +42,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			<div class="content_right agile-right text-center">
 				<img src="piblic/images/error.png" alt="" />
-				<h3>search here</h3>
-				<p>Please check the URL and try again</p>
-				<div class="b-search w3-form">
-					<form action="home" method="get">
-						<input type="text" name="search" Placeholder="Enter your keywords here..." required="">
-						<input type="submit" value="">
-					</form>
-				</div>
+				<h3>ERROR</h3>
+				<h1><?=$err?></h1>
 			</div>
 		</div>
 	</div>

@@ -9,7 +9,7 @@ class model_User
     public $name;
     public $address;
     public $phone;
-
+    public $is_delete = 0;
     public function __construct($email = null, $password = null,$name = null,$address=null,$phone=null)
     {
         $this->email = $email;
