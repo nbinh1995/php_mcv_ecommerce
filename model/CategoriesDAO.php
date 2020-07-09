@@ -9,7 +9,7 @@ class model_CategoriesDAO
     }
 
     public function readCRUD(){
-        $sql = "Select * from categories and `id_delete` = 0";
+        $sql = "SELECT * FROM `categories` WHERE `is_delete` =0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_CLASS);

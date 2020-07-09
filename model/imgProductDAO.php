@@ -6,6 +6,12 @@ class model_imgProductDAO{
     {
         $this->pdo = $pdo;
     }
+    public function readCRUD(){
+        $sql = "Select * from `img_product`";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_CLASS); 
+    }
     public function readIdCRUD($id){
         $sql = "Select * from `img_product` where `product_id` = ?";
         $statement = $this->pdo->prepare($sql);

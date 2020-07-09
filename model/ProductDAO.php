@@ -7,27 +7,27 @@ class model_ProductDAO{
         $this->pdo = $pdo;
     }
     public function readCRUD(){
-        $sql = "Select * from `product` where `id_delete` = 0";
+        $sql = "Select * from `product` where `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
 
     public function readIdCRUD($id){
-        $sql = "Select * from `product` where `categories_detail_id` = ? and `id_delete` = 0";
+        $sql = "Select * from `product` where `categories_detail_id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     public function readHotCRUD(){
-        $sql = "Select * from `product` where `isHot` = 1 and `id_delete` = 0";
+        $sql = "Select * from `product` where `isHot` = 1 and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     public function readNewCRUD(){
-        $sql = "Select * from `product` where `isNew` = 1 and `id_delete` = 0";
+        $sql = "Select * from `product` where `isNew` = 1 and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -57,7 +57,7 @@ class model_ProductDAO{
         `discount` = ?,
         `isNew` = ?,
         `isHot` = ?
-        WHERE `id` = ? and `id_delete` = 0";
+        WHERE `id` = ? and `is_delete` = 0";
          $statement = $this->pdo->prepare($sql);
          $statement->bindParam(1,$product->categories_detail_id);
          $statement->bindParam(2,$product->name);
@@ -71,7 +71,7 @@ class model_ProductDAO{
     }
     public function deleteCRUD($id){
         $sql = "UPDATE `product` 
-                SET `id_delete` = 1 
+                SET `is_delete` = 1 
                 WHERE `id` = ?";
          $statement = $this->pdo->prepare($sql);
          $statement->bindParam(1,$id);

@@ -1,13 +1,13 @@
 <?php
 class model_Order{
-    public $id=null;
-    public $user_id=null;
-    public $name=null;
-    public $address=null;
-    public $phone=null;
-    public $total_order=null;
-    public $status=null;
-    public $create_order=null;
-    public $is_delete = 0;
+    public $id;
+    public $user_id;
+    public $name;
+    public $address;
+    public $phone;
+    public $total_order;
+    public $status;
+    public $create_order;
+    public $is_delete;
 }
 ?>

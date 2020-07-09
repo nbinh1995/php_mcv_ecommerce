@@ -10,7 +10,7 @@ class model_UserDAO
     }
     public function adminLogin(model_User $user)
     {
-        $sql = "Select * from user where email = ? and password = md5(?) and isAdmin=1 and `id_delete` = 0";
+        $sql = "SELECT * from user where email = ? and password = md5(?) and isAdmin=1 and `is_delete` = 0";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(1, $user->email);
         $stmt->bindParam(2, $user->password);
@@ -27,7 +27,7 @@ class model_UserDAO
     }
     public function login(model_User $user)
     {  
-        $sql = "SELECT id, email, password FROM user WHERE email = ? and `id_delete` = 0";
+        $sql = "SELECT id, email, password FROM user WHERE email = ? and `is_delete` = 0";
         if ($stmt = $this->pdo->prepare($sql)) {
             $stmt->bindParam(1, $user->email, PDO::PARAM_STR);
             if ($stmt->execute()) {
@@ -58,7 +58,7 @@ class model_UserDAO
     }
     public function existEmail($email)
     {
-        $sql = "SELECT id FROM user WHERE email = :email and `id_delete` = 0";
+        $sql = "SELECT id FROM user WHERE email = :email and `is_delete` = 0";
         if ($stmt = $this->pdo->prepare($sql)) {
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
             if ($stmt->execute()) {
@@ -91,14 +91,14 @@ class model_UserDAO
         $sql = "UPDATE `user`
         SET
         `password` = md5(?)
-        WHERE `id` = ? and `id_delete` = 0";
+        WHERE `id` = ? and `is_delete` = 0";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(1, $user->password, PDO::PARAM_STR);
         $stmt->bindParam(2, $user->id);
         return $stmt->execute();
     }
     public function readIdCRUD($id){
-        $sql = "Select * from `user` where `id`=? and `id_delete` = 0";
+        $sql = "Select * from `user` where `id`=? and `is_delete` = 0";
        $stmt = $this->pdo->prepare($sql);
        $stmt->bindParam(1,$id);
        $stmt->execute();
@@ -114,7 +114,7 @@ class model_UserDAO
         `name` = ?,
         `phone` = ?,
         `address` = ?
-        WHERE `id` = ? and `id_delete` = 0";
+        WHERE `id` = ? and `is_delete` = 0";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(1, $user->email, PDO::PARAM_STR);
         $stmt->bindParam(2, $user->password, PDO::PARAM_STR);
@@ -127,7 +127,7 @@ class model_UserDAO
     }
     public function deleteCRUD($id){
         $sql = "UPDATE `user` 
-                SET `id_delete` = 1 
+                SET `is_delete` = 1 
                 WHERE `id` = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(1, $id);

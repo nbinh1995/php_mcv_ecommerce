@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -130,7 +129,7 @@
         </div><!-- /.container-fluid -->
       </section>
 
-      <!-- Main content -->
+      <!-- Product content -->
       <section class="content">
         <div class="container-fluid">
           <div class="row">
@@ -151,10 +150,9 @@
                         <th>Content</th>
                         <th>Price</th>
                         <th>Discount</th>
-                        <th>Is New</th>
-                        <th>Is Hot</th>
+                        <th>Product New</th>
+                        <th>Product Hot</th>
                         <th>Create Date</th>
-                        <th>Images</th>
                         <th>Function</th>
                       </tr>
                     </thead>
@@ -166,27 +164,29 @@
                           <td><?= $product[$i]->name ?></td>
                           <td><?= $product[$i]->content ?></td>
                           <td><?= $product[$i]->price?></td>
-                          <td><?= $product[$i]->$discount ?></td>
-                          <td><?= $product[$i]->isNew?></td>
-                          <td><?= $product[$i]->isHot?></td>
+                          <td><?= $product[$i]->discount ?></td>
+                          <td><?php if($product[$i]->isNew) echo 'Có';
+                                    else echo 'Không';?></td>
+                          <td><?php if($product[$i]->isHot) echo 'Có';
+                                    else echo 'Không';?></td>
                           <td><?= $product[$i]->created ?></td>
-                          <td>
-                            <?php 
-                            foreach ($img_product as $img){
-                              echo $img[$i]->img.'<br>';
-                            }
-                             ?>
-                          </td>
                           <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="delete?id=<?= $categoriesDetail[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                            <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                       <?php endfor ?>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>ID</th>
-                        <th>Categories ID</th>
+                        <th>Categories Detail ID</th>
                         <th>Item Name</th>
+                        <th>Content</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Product New</th>
+                        <th>Product Hot</th>
+                        <th>Create Date</th>
+                        <th>Function</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -200,7 +200,7 @@
           <!-- /.row -->
           <!-- edit -->
           <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="editCategories">
+            <div class="modal-dialog modal-lg" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
@@ -208,18 +208,30 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form action="edit" method="post">
+                <form action="editPro" method="post" enctype="multipart/form-data">
                   <div class="modal-body d-flex flex-column">
                     <label for="id">ID</label>
                     <input type="text" name="id" id="id" value="">
-                    <label for="categories_id"> Categories ID </label>
-                    <select name="categories_id" id="categories_id">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
-                    </select>
+                    <label for="categories_detail_id"> Categories Detail ID </label>
+                    <input type="text" name="categories_detail_id" id="categories_detail_id">
                     <label for="item_name">Item Name</label>
-                    <input type="text" name="item_name" id="item_name" value="">
+                    <input type="text" name="name" id="item_name" value="">
+                    <label for="content">Content</label>
+                    <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                    <label for="price">Price</label>
+                    <input type="text" name="price" id="price" value="">
+                    <label for="discount">Discount</label>
+                    <input type="text" name="discount" id="discount" value="">
+                    <label for="isNew">Product New</label>
+                    <select name="isNew" id="isNew">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                    </select>
+                    <label for="isHot">Product Hot</label>
+                    <select name="isHot" id="isHot">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                    </select>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -232,8 +244,11 @@
           <script>
             const Table = document.getElementById('example1');
             const IDEdit = document.getElementById('id');
-            const Categories = document.getElementById('categories_id');
+            const Categories = document.getElementById('categories_detail_id');
             const Item = document.getElementById('item_name');
+            const Content = document.getElementById('content');
+            const Price = document.getElementById('price');
+            const Discount = document.getElementById('discount');
 
             function edit(row) {
               Table.rows[row]
@@ -256,26 +271,38 @@
           <!-- /.edit -->
           <!-- add -->
           <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="addCategories">
+            <div class="modal-dialog modal-lg" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Categories</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form action="add" method="post">
+                <form action="addPro" method="post" enctype="multipart/form-data">
                   <div class="modal-body d-flex flex-column">
-                    <!-- <label for="add_id">ID</label>
-                  <input type="text" name="id" id="add_id" value=""> -->
-                    <label for="categories_add"> Categories ID </label>
-                    <select name="categories_id" id="categories_add">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
+                    <!-- <label for="id">ID</label>
+                    <input type="text" name="id" id="id" value=""> -->
+                    <label for="categories_detail_id"> Categories Detail ID </label>
+                    <input type="text" name="categories_detail_id" id="categories_detail_id">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" name="name" id="item_name" value="">
+                    <label for="content">Content</label>
+                    <textarea name="content" id="content" cols="30" rows="5"></textarea>
+                    <label for="price">Price</label>
+                    <input type="text" name="price" id="price" value="">
+                    <label for="discount">Discount</label>
+                    <input type="text" name="discount" id="discount" value="">
+                    <label for="isNew">Product New</label>
+                    <select name="isNew" id="isNew">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
                     </select>
-                    <label for="add_name">Item Name</label>
-                    <input type="text" name="item_name" id="add_name" value="">
+                    <label for="isHot">Product Hot</label>
+                    <select name="isHot" id="isHot">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                    </select>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -290,6 +317,161 @@
         <!-- /.container-fluid -->
       </section>
       <!-- /.content -->
+      <!-- img content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">ImgProductTable with default features</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example2" class="table table-bordered table-striped">
+                    <caption><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add</button></caption>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Product ID</th>
+                        <th>Image</th>
+                        <th>Function</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php for ($i = 0; $i < count($imgProduct); $i++) : ?>
+                        <tr>
+                          <td><?= $imgProduct[$i]->id ?></td>
+                          <td><?= $imgProduct[$i]->product_id?></td>
+                          <td><img src="<?= $imgProduct[$i]->img?>" alt="img_<?= $imgProduct[$i]->id ?>" width="100px"></td>
+                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editImg"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $imgProduct[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                        </tr>
+                      <?php endfor ?>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Product ID</th>
+                        <th>Image</th>
+                        <th>Function</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+          <!-- edit -->
+          <div class="modal fade" id="editImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="editCategories">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="editImgPro" method="post" enctype="multipart/form-data">
+                  <div class="modal-body d-flex flex-column">
+                    <label for="id">ID</label>
+                    <input type="text" name="id" id="id" value="">
+                    <label for="categories_detail_id"> Categories Detail ID </label>
+                    <input type="text" name="categories_detail_id" id="categories_detail_id">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" name="name" id="item_name" value="">
+                    <label for="content">Content</label>
+                    <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                    <label for="price">Price</label>
+                    <input type="text" name="price" id="price" value="">
+                    <label for="discount">Discount</label>
+                    <input type="text" name="discount" id="discount" value="">
+                    <label for="isNew">Product New</label>
+                    <select name="isNew" id="isNew">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                    </select>
+                    <label for="isHot">Product Hot</label>
+                    <select name="isHot" id="isHot">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                    </select>
+                    <label for="fileToUpload">Image</label>
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <script>
+            const Table = document.getElementById('example1');
+            const IDEdit = document.getElementById('id');
+            const Categories = document.getElementById('categories_detail_id');
+            const Item = document.getElementById('item_name');
+            const Content = document.getElementById('content');
+            const Price = document.getElementById('price');
+            const Discount = document.getElementById('discount');
+            const News = document.getElementById('isNew');
+            const Hot = document.getElementById('isHot');
+            function edit(row) {
+              Table.rows[row]
+              IDEdit.value = Table.rows[row].cells[0].innerText;
+              type = Table.rows[row].cells[1].innerText;
+              switch (type) {
+                case 'Nam':
+                  Categories.value = 1;
+                  break;
+                case 'Nữ':
+                  Categories.value = 2;
+                  break;
+                case 'Trẻ em':
+                  Categories.value = 3;
+                  break;
+              }
+              Item.value = Table.rows[row].cells[2].innerText;
+            }
+          </script>
+          <!-- /.edit -->
+          <!-- add -->
+          <div class="modal fade" id="addImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="editCategories">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="addImgPro" method="post" enctype="multipart/form-data">
+                  <div class="modal-body d-flex flex-column">
+                    <!-- <label for="id">ID</label>
+                    <input type="text" name="id" id="id" value=""> -->
+                    <label for="product_id"> Product ID </label>
+                    <input type="text" name="product_id" id="product_id">
+                    <label for="fileToUpload">Image</label>
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /.add -->
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.img content -->
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
@@ -328,15 +510,20 @@
         "responsive": true,
         "autoWidth": false,
       });
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
+      $("#example2").DataTable({
         "responsive": true,
+        "autoWidth": false,
       });
+      // $('.summernote').summernote();
+      // $('#example1').DataTable({
+      //   "paging": true,
+      //   "lengthChange": false,
+      //   "searching": false,
+      //   "ordering": true,
+      //   "info": true,
+      //   "autoWidth": false,
+      //   "responsive": true,
+      // });
     });
   </script>
 </body>

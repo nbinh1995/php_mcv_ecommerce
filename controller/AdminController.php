@@ -11,13 +11,20 @@ class controller_AdminController
             return view('admin/dashboard/dashboard');
         } else {
             $err = 'Account is undefine';
-            return view('layout/404',['err'=>$err]);
+            return view('layout/404', ['err' => $err]);
         }
     }
 
     public function adminLogin()
     {
-        return view('admin/login/login');
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
+            return view('admin/dashboard/dashboard');
+        } else {
+            return view('admin/login/login');
+        }
     }
     public function adminLogout()
     {
@@ -28,31 +35,39 @@ class controller_AdminController
         session_destroy();
         return redirect('dashboard');
     }
-    public function categories(){
+    public function categories()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
             $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
             $categoriesDetail = $categoriesDetailDAO->readCRUD();
-            return view('admin/manager/managerCategories',['categoriesDetail'=>$categoriesDetail]);
+            return view('admin/manager/managerCategories', ['categoriesDetail' => $categoriesDetail]);
         } else {
             return view('admin/login/login');
         }
-       
     }
-    public function product(){
+    public function product()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
-            return view('admin/manager/managerProduct');
+            $productDAO = new model_ProductDAO(model_DbConnection::make());
+            $product = $productDAO->readCRUD();
+            unset($productDAO);
+            $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+            $imgProduct = $imgProductDAO->readCRUD();
+            $data = ['product' => $product, 'imgProduct' => $imgProduct];
+            unset($imgProductDAO);
+            return view('admin/manager/managerProduct', $data);
         } else {
             return view('admin/login/login');
         }
-        
     }
-    public function user(){
+    public function user()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
@@ -62,7 +77,8 @@ class controller_AdminController
             return view('admin/login/login');
         }
     }
-    public function order(){
+    public function order()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
@@ -71,6 +87,5 @@ class controller_AdminController
         } else {
             return view('admin/login/login');
         }
-        
     }
 }

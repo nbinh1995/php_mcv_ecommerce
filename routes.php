@@ -25,4 +25,11 @@ $router->get('adOrder','controller_AdminController@order');
 $router->post('addCat','controller_CategoriesController@add');
 $router->post('editCat','controller_CategoriesController@edit');
 $router->get('deleteCat','controller_CategoriesController@delete');
+/* control CRUD Product*/
+$router->post('addPro','controller_ProductController@add');
+$router->post('editPro','controller_ProductController@edit');
+$router->get('deletePro','controller_ProductController@delete');
+$router->post('addImgPro','controller_ProductController@addImg');
+$router->post('editImgPro','controller_ProductController@editImg');
+$router->get('deleteImgPro','controller_ProductController@deleteImg');
 ?>

@@ -7,7 +7,7 @@ class model_OrderDetailDAO{
         $this->pdo = $pdo;
     }
     public function readCRUD($id){
-        $sql = "Select * from `billdetail` where `order_id` = ? `id_delete` = 0";
+        $sql = "Select * from `billdetail` where `order_id` = ? `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();
@@ -15,7 +15,7 @@ class model_OrderDetailDAO{
     }
 
     public function readIdCRUD($id){
-        $sql = "Select * from `order_detail` where `order_id` = ? and `id_delete` = 0";
+        $sql = "Select * from `order_detail` where `order_id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();
@@ -45,7 +45,7 @@ class model_OrderDetailDAO{
         `price` = ?,
         `amount` = ?,
         `total_detail` = ?
-        WHERE `id` = ? and `id_delete` = 0";
+        WHERE `id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$order_detail->order_id);
         $statement->bindParam(2,$order_detail->product_id);
@@ -58,7 +58,7 @@ class model_OrderDetailDAO{
 
     public function deleteCRUD($id){
         $sql = "UPDATE `order_detail` 
-                SET `id_delete` = 1 
+                SET `is_delete` = 1 
                 WHERE `id` = ?";
          $statement = $this->pdo->prepare($sql);
          $statement->bindParam(1,$id);

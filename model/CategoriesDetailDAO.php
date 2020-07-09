@@ -9,14 +9,14 @@ class model_CategoriesDetailDAO
     }
 
     public function readCRUD(){
-        $sql = "Select * from categories_detail where `id_delete` = 0";
+        $sql = "SELECT * from categories_detail where `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
 
     public function readIdCRUD($id){
-        $sql = "Select * from categories_detail where `categories_id` = ? and `id_delete` = 0";
+        $sql = "SELECT * from categories_detail where `categories_id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();
@@ -35,7 +35,7 @@ class model_CategoriesDetailDAO
     public function updateCRUD(model_CategoriesDetail $categories_detail){
         $sql = "UPDATE `categories_detail` 
                 SET `categories_id` = ?,`item_name` = ? 
-                WHERE `id` = ? and `id_delete` = 0";
+                WHERE `id` = ? and `is_delete` = 0";
          $statement = $this->pdo->prepare($sql);
          $statement->bindParam(1,$categories_detail->categories_id);
          $statement->bindParam(2,$categories_detail->item_name);
@@ -46,7 +46,7 @@ class model_CategoriesDetailDAO
     }
     public function deleteCRUD($id){
         $sql = "UPDATE `categories_detail` 
-                SET `id_delete` = 1 
+                SET `is_delete` = 1 
                 WHERE `id` = ?";
          $statement = $this->pdo->prepare($sql);
          $statement->bindParam(1,$id);
