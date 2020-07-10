@@ -20,6 +20,7 @@ class model_Product{
        $this->discount = $discount;
        $this->isNew = $isNew;
        $this->isHot = $isHot;
+       
    }
 //    public $img = null;
 }

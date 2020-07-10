@@ -21,9 +21,7 @@ class controller_CategoriesController{
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
             $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
             $categoriesDetail = new model_CategoriesDetail(trim($_POST['categories_id']),trim($_POST['item_name']));
-            var_dump(trim($_POST['id']));
             $categoriesDetail->id=trim($_POST['id']);
-            var_dump($categoriesDetail->id);
             $categoriesDetailDAO->updateCRUD($categoriesDetail);
             return redirect('adCategories'); 
         } else {

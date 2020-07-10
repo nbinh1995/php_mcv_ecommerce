@@ -43,6 +43,7 @@ class controller_AdminController
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
             $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
             $categoriesDetail = $categoriesDetailDAO->readCRUD();
+            unset($categoriesDetailDAO);
             return view('admin/manager/managerCategories', ['categoriesDetail' => $categoriesDetail]);
         } else {
             return view('admin/login/login');
@@ -59,8 +60,11 @@ class controller_AdminController
             unset($productDAO);
             $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
             $imgProduct = $imgProductDAO->readCRUD();
-            $data = ['product' => $product, 'imgProduct' => $imgProduct];
             unset($imgProductDAO);
+            $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
+            $categoriesDetail = $categoriesDetailDAO->readCRUD();
+            unset($categoriesDetailDAO);
+            $data = ['product' => $product, 'imgProduct' => $imgProduct,'categoriesDetail'=> $categoriesDetail];
             return view('admin/manager/managerProduct', $data);
         } else {
             return view('admin/login/login');

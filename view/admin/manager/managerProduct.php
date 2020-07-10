@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -160,15 +161,22 @@
                       <?php for ($i = 0; $i < count($product); $i++) : ?>
                         <tr>
                           <td><?= $product[$i]->id ?></td>
-                          <td><?= $product[$i]->categories_detail_id?></td>
+                          <td><?php
+                              foreach ($categoriesDetail as $type) {
+                                if ($product[$i]->categories_detail_id === $type->id) {
+                                  echo $type->item_name;
+                                  break;
+                                }
+                              }
+                              ?></td>
                           <td><?= $product[$i]->name ?></td>
                           <td><?= $product[$i]->content ?></td>
-                          <td><?= $product[$i]->price?></td>
+                          <td><?= $product[$i]->price ?></td>
                           <td><?= $product[$i]->discount ?></td>
-                          <td><?php if($product[$i]->isNew) echo 'Có';
-                                    else echo 'Không';?></td>
-                          <td><?php if($product[$i]->isHot) echo 'Có';
-                                    else echo 'Không';?></td>
+                          <td><?php if ($product[$i]->isNew) echo 'Có';
+                              else echo 'Không'; ?></td>
+                          <td><?php if ($product[$i]->isHot) echo 'Có';
+                              else echo 'Không'; ?></td>
                           <td><?= $product[$i]->created ?></td>
                           <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
                             <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
@@ -213,7 +221,11 @@
                     <label for="id">ID</label>
                     <input type="text" name="id" id="id" value="">
                     <label for="categories_detail_id"> Categories Detail ID </label>
-                    <input type="text" name="categories_detail_id" id="categories_detail_id">
+                    <select name="categories_detail_id" id="categories_detail_id">
+                      <?php foreach ($categoriesDetail as $type) : ?>
+                        <option value="<?= $type->id ?>"><?= $type->item_name ?></option>
+                      <?php endforeach ?>
+                    </select>
                     <label for="item_name">Item Name</label>
                     <input type="text" name="name" id="item_name" value="">
                     <label for="content">Content</label>
@@ -224,13 +236,13 @@
                     <input type="text" name="discount" id="discount" value="">
                     <label for="isNew">Product New</label>
                     <select name="isNew" id="isNew">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
+                      <option value="0">Không</option>
+                      <option value="1">Có</option>
                     </select>
                     <label for="isHot">Product Hot</label>
                     <select name="isHot" id="isHot">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
+                      <option value="0">Không</option>
+                      <option value="1">Có</option>
                     </select>
                   </div>
                   <div class="modal-footer">
@@ -249,23 +261,26 @@
             const Content = document.getElementById('content');
             const Price = document.getElementById('price');
             const Discount = document.getElementById('discount');
+            const News = document.getElementById('isNew');
+            const Hot = document.getElementById('isHot');
 
             function edit(row) {
               Table.rows[row]
               IDEdit.value = Table.rows[row].cells[0].innerText;
-              type = Table.rows[row].cells[1].innerText;
-              switch (type) {
-                case 'Nam':
-                  Categories.value = 1;
-                  break;
-                case 'Nữ':
-                  Categories.value = 2;
-                  break;
-                case 'Trẻ em':
-                  Categories.value = 3;
-                  break;
-              }
+              temp = Table.rows[row].cells[1].innerText;
+              <?php foreach ($categoriesDetail as $type) : ?>
+                if (temp === '<?= $type->item_name ?>') Categories.value = <?= $type->id ?>;
+              <?php endforeach ?>
               Item.value = Table.rows[row].cells[2].innerText;
+              Content.value = Table.rows[row].cells[3].innerText;
+              Price.value = Table.rows[row].cells[4].innerText;
+              Discount.value = Table.rows[row].cells[5].innerText;
+              $temp1 = Table.rows[row].cells[6].innerText;
+              if ($temp1 === 'Không') News.value = 0;
+              else News.value = 1;
+              $temp2 = Table.rows[row].cells[7].innerText;
+              if ($temp2 === 'Có') Hot.value = 1;
+              else Hot.value = 0;
             }
           </script>
           <!-- /.edit -->
@@ -283,26 +298,33 @@
                   <div class="modal-body d-flex flex-column">
                     <!-- <label for="id">ID</label>
                     <input type="text" name="id" id="id" value=""> -->
-                    <label for="categories_detail_id"> Categories Detail ID </label>
-                    <input type="text" name="categories_detail_id" id="categories_detail_id">
-                    <label for="item_name">Item Name</label>
-                    <input type="text" name="name" id="item_name" value="">
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" cols="30" rows="5"></textarea>
-                    <label for="price">Price</label>
-                    <input type="text" name="price" id="price" value="">
-                    <label for="discount">Discount</label>
-                    <input type="text" name="discount" id="discount" value="">
-                    <label for="isNew">Product New</label>
-                    <select name="isNew" id="isNew">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
+                    <label for="Acategories_detail_id"> Categories Detail ID </label>
+                    <select name="categories_detail_id" id="Acategories_detail_id">
+                      <?php foreach ($categoriesDetail as $type) : ?>
+                        <option value="<?= $type->id ?>"><?= $type->item_name ?></option>
+                      <?php endforeach ?>
                     </select>
-                    <label for="isHot">Product Hot</label>
-                    <select name="isHot" id="isHot">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
+                    <label for="Aitem_name">Item Name</label>
+                    <input type="text" name="name" id="Aitem_name" value="">
+                    <label for="Acontent">Content</label>
+                    <textarea name="content" id="Acontent" cols="30" rows="5"></textarea>
+                    <label for="Aprice">Price</label>
+                    <input type="text" name="price" id="Aprice" value="">
+                    <label for="Adiscount">Discount</label>
+                    <input type="text" name="discount" id="Adiscount" value="">
+                    <label for="AisNew">Product New</label>
+                    <select name="isNew" id="AisNew">
+                      <option value="0">Không</option>
+                      <option value="1">Có</option>
                     </select>
+                    <label for="AisHot">Product Hot</label>
+                    <select name="isHot" id="AisHot">
+                      <option value="0">Không</option>
+                      <option value="1">Có</option>
+                    </select>
+                    <!-- <label for="AfileToUploadI">Image</label>
+                    <input type="file" name="fileToUpload" id="AfileToUploadI">
+                    <img id="blah1" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/> -->
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -342,10 +364,10 @@
                       <?php for ($i = 0; $i < count($imgProduct); $i++) : ?>
                         <tr>
                           <td><?= $imgProduct[$i]->id ?></td>
-                          <td><?= $imgProduct[$i]->product_id?></td>
-                          <td><img src="<?= $imgProduct[$i]->img?>" alt="img_<?= $imgProduct[$i]->id ?>" width="100px"></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editImg"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $imgProduct[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                          <td><?= $imgProduct[$i]->product_id ?></td>
+                          <td><img src="<?= $imgProduct[$i]->img ?>" alt="img_<?= $imgProduct[$i]->id ?>" width="100px"></td>
+                          <td><button type="button" onclick="editI(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editImg"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <a class="btn btn-danger btn-sm" href="deleteImgPro?id=<?= $imgProduct[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                       <?php endfor ?>
                     </tbody>
@@ -368,7 +390,7 @@
           <!-- /.row -->
           <!-- edit -->
           <div class="modal fade" id="editImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="editCategories">
+            <div class="modal-dialog" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
@@ -378,30 +400,15 @@
                 </div>
                 <form action="editImgPro" method="post" enctype="multipart/form-data">
                   <div class="modal-body d-flex flex-column">
-                    <label for="id">ID</label>
-                    <input type="text" name="id" id="id" value="">
-                    <label for="categories_detail_id"> Categories Detail ID </label>
-                    <input type="text" name="categories_detail_id" id="categories_detail_id">
-                    <label for="item_name">Item Name</label>
-                    <input type="text" name="name" id="item_name" value="">
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" cols="30" rows="10"></textarea>
-                    <label for="price">Price</label>
-                    <input type="text" name="price" id="price" value="">
-                    <label for="discount">Discount</label>
-                    <input type="text" name="discount" id="discount" value="">
-                    <label for="isNew">Product New</label>
-                    <select name="isNew" id="isNew">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
-                    </select>
-                    <label for="isHot">Product Hot</label>
-                    <select name="isHot" id="isHot">
-                            <option value="0">Không</option>
-                            <option value="1">Có</option>
-                    </select>
+                    <label for="idI">ID</label>
+                    <input type="text" name="id" id="idI" value="">
+                    <label for="product_id"> Product ID </label>
+                    <input type="text" name="product_id" id="product_id">
                     <label for="fileToUpload">Image</label>
+                    <!-- <input type="text" name="target" id="url_img"> -->
+                    <img src="" alt="" id="img" width="100px">
                     <input type="file" name="fileToUpload" id="fileToUpload">
+                    <img id="blah" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -412,37 +419,24 @@
             </div>
           </div>
           <script>
-            const Table = document.getElementById('example1');
-            const IDEdit = document.getElementById('id');
-            const Categories = document.getElementById('categories_detail_id');
-            const Item = document.getElementById('item_name');
-            const Content = document.getElementById('content');
-            const Price = document.getElementById('price');
-            const Discount = document.getElementById('discount');
-            const News = document.getElementById('isNew');
-            const Hot = document.getElementById('isHot');
-            function edit(row) {
-              Table.rows[row]
-              IDEdit.value = Table.rows[row].cells[0].innerText;
-              type = Table.rows[row].cells[1].innerText;
-              switch (type) {
-                case 'Nam':
-                  Categories.value = 1;
-                  break;
-                case 'Nữ':
-                  Categories.value = 2;
-                  break;
-                case 'Trẻ em':
-                  Categories.value = 3;
-                  break;
-              }
-              Item.value = Table.rows[row].cells[2].innerText;
+            const TableI = document.getElementById('example2');
+            const IDImgEdit = document.getElementById('idI');
+            const Product = document.getElementById('product_id');
+            const Img = document.getElementById('img');
+            const UrlImg = document.getElementById('url_img');
+
+            function editI(row) {
+              TableI.rows[row]
+              IDImgEdit.value = TableI.rows[row].cells[0].innerText;
+              Product.value = TableI.rows[row].cells[1].innerText;
+              Img.src = TableI.rows[row].cells[2].lastElementChild.src;
+              // UrlImg.value = TableI.rows[row].cells[2].lastElementChild.src;
             }
           </script>
           <!-- /.edit -->
           <!-- add -->
           <div class="modal fade" id="addImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="editCategories">
+            <div class="modal-dialog " role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
@@ -454,10 +448,11 @@
                   <div class="modal-body d-flex flex-column">
                     <!-- <label for="id">ID</label>
                     <input type="text" name="id" id="id" value=""> -->
-                    <label for="product_id"> Product ID </label>
-                    <input type="text" name="product_id" id="product_id">
-                    <label for="fileToUpload">Image</label>
-                    <input type="file" name="fileToUpload" id="fileToUpload">
+                    <label for="Aproduct_idI"> Product ID </label>
+                    <input type="number" name="product_id" id="Aproduct_idI" min='1' max='<?= count($product) ?>'>
+                    <label for="AfileToUploadI">Image</label>
+                    <input type="file" name="fileToUpload" id="AfileToUploadI">
+                    <img id="blah1" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -514,6 +509,37 @@
         "responsive": true,
         "autoWidth": false,
       });
+
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+            $('#blah').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+      }
+      function readURL1(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+            $('#blah1').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+      }
+      $("#AfileToUploadI").change(function() {
+        readURL1(this);
+      });
+
+      $("#fileToUpload").change(function() {
+        readURL(this);
+      });
+     
       // $('.summernote').summernote();
       // $('#example1').DataTable({
       //   "paging": true,
