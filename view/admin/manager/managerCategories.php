@@ -228,7 +228,6 @@
             const Item = document.getElementById('item_name');
 
             function edit(row) {
-              Table.rows[row]
               IDEdit.value = Table.rows[row].cells[0].innerText;
               type = Table.rows[row].cells[1].innerText;
               switch (type) {

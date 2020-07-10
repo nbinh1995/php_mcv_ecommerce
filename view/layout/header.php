@@ -30,7 +30,7 @@
                         <a href="account"><?='Hi,'.$user->email?> </a>
                         <?php endif?>
                         <a href="logout" class="logout <?php if (isset($_SESSION["loggedin"]) && 
-                    $_SESSION["loggedin"] === true) echo 'block';?>">Logout</a>
+                        $_SESSION["loggedin"] === true) echo 'block';?>">Logout</a>
                         <a href="login" class="<?php if (isset($_SESSION["loggedin"]) && 
                         $_SESSION["loggedin"] === true) echo 'none';?>">Đăng nhập</a>
                         <a href="register">Đăng ký</a>

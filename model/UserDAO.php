@@ -106,11 +106,25 @@ class model_UserDAO
         return $result[0];
     }
 
+    public function readCRUD(){
+        $sql = "Select * from `user` where isAdmin = 0 and `is_delete` = 0";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS);
+    }
+
+    public function readAdCRUD(){
+        $sql = "Select * from `user` where isAdmin = 1 and `is_delete` = 0";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS);
+    }
+
     public function updateCRUD($user){
         $sql = "UPDATE `user`
         SET
         `email` = ?,
-        `password` = ?,
+        `password` = md5(?),
         `name` = ?,
         `phone` = ?,
         `address` = ?
@@ -122,6 +136,17 @@ class model_UserDAO
         $stmt->bindParam(4, $user->phone, PDO::PARAM_STR);
         $stmt->bindParam(5, $user->address, PDO::PARAM_STR);
         $stmt->bindParam(6, $user->id);
+         return $stmt->execute();
+
+    }
+    public function updatePassCRUD($id,$password){
+        $sql = "UPDATE `user`
+        SET
+        `password` = md5(?)
+        WHERE `id` = ? and `is_delete` = 0";
+        $stmt = $this->pdo->prepare($sql);      
+        $stmt->bindParam(1, $password, PDO::PARAM_STR);
+        $stmt->bindParam(2, $id);
          return $stmt->execute();
 
     }

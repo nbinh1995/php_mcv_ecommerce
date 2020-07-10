@@ -20,6 +20,19 @@
   <link rel="stylesheet" href="asserts/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    .img_table {
+      display: none;
+    }
+
+    .block {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -141,8 +154,8 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
-                    <caption><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add</button></caption>
+                  <table id="example1" class="table table-bordered table-hover">
+                    <button style="margin: 10px;" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add</button>
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -160,7 +173,41 @@
                     <tbody>
                       <?php for ($i = 0; $i < count($product); $i++) : ?>
                         <tr>
-                          <td><?= $product[$i]->id ?></td>
+                          <td><?= $product[$i]->id ?>
+                            <!-- image -->
+                            <div class="card img_table mx-auto">
+                              <div class="card-header">
+                                <h3 class="card-title">Image <?= $product[$i]->name ?></h3>
+                              </div>
+                              <table class="example2" class="table">
+                                <div style="margin: 10px;"><button onclick="add(<?= $i + 1 ?>)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add Image</button></div>
+                                <thead>
+                                  <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Function</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php foreach ($imgProduct[$i] as $img) : ?>
+                                    <tr>
+                                      <td><?= $img->id ?></td>
+                                      <td><img src="<?= $img->img ?>" alt="" width="100px"></td>
+                                      <td><a class="btn btn-danger btn-sm" href="deleteImgPro?id=<?= $img->id ?>"><i class="fas fa-trash"></i> Delete Image</a></td>
+                                    </tr>
+                                  <?php endforeach ?>
+                                </tbody>
+                                <tfoot>
+                                  <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Function</th>
+                                  </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!--/ image -->
+                          </td>
                           <td><?php
                               foreach ($categoriesDetail as $type) {
                                 if ($product[$i]->categories_detail_id === $type->id) {
@@ -178,7 +225,9 @@
                           <td><?php if ($product[$i]->isHot) echo 'Có';
                               else echo 'Không'; ?></td>
                           <td><?= $product[$i]->created ?></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                          <td>
+                            <button type="button" onclick="action(<?= $i ?>)"  class="btn btn-success btn-sm mb-1"><i class="fas fa-images"></i> Images</button>
+                            <button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
                             <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                       <?php endfor ?>
@@ -211,7 +260,7 @@
             <div class="modal-dialog modal-lg" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -253,7 +302,9 @@
               </div>
             </div>
           </div>
+
           <script>
+            const ImgTable = document.getElementsByClassName('img_table');
             const Table = document.getElementById('example1');
             const IDEdit = document.getElementById('id');
             const Categories = document.getElementById('categories_detail_id');
@@ -263,9 +314,26 @@
             const Discount = document.getElementById('discount');
             const News = document.getElementById('isNew');
             const Hot = document.getElementById('isHot');
-
+            //tab 
+            function action(row) {
+              if (ImgTable[row].classList.contains('block')) {
+                ImgTable[row].classList.remove('block');
+              } else {
+                for (let i = 0; i < ImgTable.length; i++) {
+                  if (ImgTable[i].classList.contains('block')) {
+                    ImgTable[i].classList.remove('block');
+                    break;
+                  }
+                }
+                ImgTable[row].classList.add('block');
+              }
+            }
+            // catch html input modal add image
+            function add(rows) {
+              document.getElementById('Aproduct_idI').value = Table.rows[rows].cells[0].innerText;
+            }
+            // catch html input modal edit
             function edit(row) {
-              Table.rows[row]
               IDEdit.value = Table.rows[row].cells[0].innerText;
               temp = Table.rows[row].cells[1].innerText;
               <?php foreach ($categoriesDetail as $type) : ?>
@@ -289,7 +357,7 @@
             <div class="modal-dialog modal-lg" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -322,9 +390,15 @@
                       <option value="0">Không</option>
                       <option value="1">Có</option>
                     </select>
-                    <!-- <label for="AfileToUploadI">Image</label>
-                    <input type="file" name="fileToUpload" id="AfileToUploadI">
-                    <img id="blah1" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/> -->
+                    <label for="AfileToUpload">Image</label>
+                    <input type="file" name="fileToUpload[]" id="AfileToUpload" multiple=''>
+                    <div class="Agallery"></div>
+                    <style>
+                      .Agallery img {
+                        width: 100px;
+                        height: auto;
+                      }
+                    </style>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -340,135 +414,41 @@
       </section>
       <!-- /.content -->
       <!-- img content -->
-      <section class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">ImgProductTable with default features</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <table id="example2" class="table table-bordered table-striped">
-                    <caption><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add</button></caption>
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Product ID</th>
-                        <th>Image</th>
-                        <th>Function</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php for ($i = 0; $i < count($imgProduct); $i++) : ?>
-                        <tr>
-                          <td><?= $imgProduct[$i]->id ?></td>
-                          <td><?= $imgProduct[$i]->product_id ?></td>
-                          <td><img src="<?= $imgProduct[$i]->img ?>" alt="img_<?= $imgProduct[$i]->id ?>" width="100px"></td>
-                          <td><button type="button" onclick="editI(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editImg"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="deleteImgPro?id=<?= $imgProduct[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
-                        </tr>
-                      <?php endfor ?>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>ID</th>
-                        <th>Product ID</th>
-                        <th>Image</th>
-                        <th>Function</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-          <!-- edit -->
-          <div class="modal fade" id="editImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="editCategories">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form action="editImgPro" method="post" enctype="multipart/form-data">
-                  <div class="modal-body d-flex flex-column">
-                    <label for="idI">ID</label>
-                    <input type="text" name="id" id="idI" value="">
-                    <label for="product_id"> Product ID </label>
-                    <input type="text" name="product_id" id="product_id">
-                    <label for="fileToUpload">Image</label>
-                    <!-- <input type="text" name="target" id="url_img"> -->
-                    <img src="" alt="" id="img" width="100px">
-                    <input type="file" name="fileToUpload" id="fileToUpload">
-                    <img id="blah" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <script>
-            const TableI = document.getElementById('example2');
-            const IDImgEdit = document.getElementById('idI');
-            const Product = document.getElementById('product_id');
-            const Img = document.getElementById('img');
-            const UrlImg = document.getElementById('url_img');
-
-            function editI(row) {
-              TableI.rows[row]
-              IDImgEdit.value = TableI.rows[row].cells[0].innerText;
-              Product.value = TableI.rows[row].cells[1].innerText;
-              Img.src = TableI.rows[row].cells[2].lastElementChild.src;
-              // UrlImg.value = TableI.rows[row].cells[2].lastElementChild.src;
-            }
-          </script>
-          <!-- /.edit -->
-          <!-- add -->
-          <div class="modal fade" id="addImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog " role="editCategories">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form action="addImgPro" method="post" enctype="multipart/form-data">
-                  <div class="modal-body d-flex flex-column">
-                    <!-- <label for="id">ID</label>
-                    <input type="text" name="id" id="id" value=""> -->
-                    <label for="Aproduct_idI"> Product ID </label>
-                    <input type="number" name="product_id" id="Aproduct_idI" min='1' max='<?= count($product) ?>'>
-                    <label for="AfileToUploadI">Image</label>
-                    <input type="file" name="fileToUpload" id="AfileToUploadI">
-                    <img id="blah1" src="http://placehold.it/100" alt="your image" width="100px" height="100px"/>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- /.add -->
-        </div>
-        <!-- /.container-fluid -->
-      </section>
       <!-- /.img content -->
     </div>
     <!-- /.content-wrapper -->
+    <!-- add -->
+    <div class="modal fade" id="addImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog " role="editCategories">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="addImgPro" method="post" enctype="multipart/form-data">
+            <div class="modal-body d-flex flex-column">
+              <input type="text" name="product_id" id="Aproduct_idI" hidden>
+              <label for="fileToUpload">Image</label>
+              <input type="file" name="fileToUpload[]" id="fileToUpload" multiple=''>
+              <div class="gallery"></div>
+              <style>
+                .gallery img {
+                  width: 100px;
+                  height: auto;
+                }
+              </style>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.add -->
     <footer class="main-footer">
       <div class="float-right d-none d-sm-block">
         <b>Version</b> 3.0.5
@@ -505,43 +485,7 @@
         "responsive": true,
         "autoWidth": false,
       });
-      $("#example2").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-
-      function readURL(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function(e) {
-            $('#blah').attr('src', e.target.result);
-          }
-
-          reader.readAsDataURL(input.files[0]); // convert to base64 string
-        }
-      }
-      function readURL1(input) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function(e) {
-            $('#blah1').attr('src', e.target.result);
-          }
-
-          reader.readAsDataURL(input.files[0]); // convert to base64 string
-        }
-      }
-      $("#AfileToUploadI").change(function() {
-        readURL1(this);
-      });
-
-      $("#fileToUpload").change(function() {
-        readURL(this);
-      });
-     
-      // $('.summernote').summernote();
-      // $('#example1').DataTable({
+      //   $('.example2').DataTable({
       //   "paging": true,
       //   "lengthChange": false,
       //   "searching": false,
@@ -550,6 +494,46 @@
       //   "autoWidth": false,
       //   "responsive": true,
       // });
+      // Multiple images preview in browser
+      var imagesPreview = function(input, placeToInsertImagePreview) {
+        if (input.files) {
+          var filesAmount = input.files.length;
+
+          for (i = 0; i < filesAmount; i++) {
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+              $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+            }
+
+            reader.readAsDataURL(input.files[i]);
+          }
+        }
+      };
+
+      $('#fileToUpload').on('change', function() {
+        imagesPreview(this, 'div.gallery');
+      });
+      // Multiple images preview in browser
+      var AimagesPreview = function(input, placeToInsertImagePreview) {
+        if (input.files) {
+          var filesAmount = input.files.length;
+
+          for (i = 0; i < filesAmount; i++) {
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+              $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+            }
+
+            reader.readAsDataURL(input.files[i]);
+          }
+        }
+      };
+
+      $('#AfileToUpload').on('change', function() {
+        AimagesPreview(this, 'div.Agallery');
+      });
     });
   </script>
 </body>

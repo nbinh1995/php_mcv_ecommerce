@@ -142,43 +142,44 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped">
-                    <caption><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add</button></caption>
+                    <button type="button" class="btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add</button>
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Categories ID</th>
-                        <th>Item Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Created Date</th>
                         <th>Function</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
+                      <?php for($i=0;$i<count($user);$i++) : ?>
                         <tr>
-                          <td><?= $categoriesDetail[$i]->id ?></td>
-                          <td><?php
-                              switch ($categoriesDetail[$i]->categories_id) {
-                                case 1:
-                                  echo 'Nam';
-                                  break;
-                                case 2:
-                                  echo 'Nữ';
-                                  break;
-                                case 3:
-                                  echo 'Trẻ em';
-                                  break;
-                              }
-                              ?></td>
-                          <td><?= $categoriesDetail[$i]->item_name ?></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="delete?id=<?= $categoriesDetail[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                          <td><?= $user[$i]->id ?></td>
+                          <td><?= $user[$i]->email ?></td>
+                          <td><?= $user[$i]->password ?></td>
+                          <td><?= $user[$i]->name ?></td>
+                          <td><?= $user[$i]->address ?></td>
+                          <td><?= $user[$i]->phone ?></td>
+                          <td><?= $user[$i]->created ?></td>
+                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Change Pass</button>
+                            <a class="btn btn-danger btn-sm" href="deleteUser?id=<?= $user[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                       <?php endfor ?>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>ID</th>
-                        <th>Categories ID</th>
-                        <th>Item Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Created Date</th>
+                        <th>Function</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -190,8 +191,8 @@
             <!-- /.col -->
           </div>
           <!-- /.row -->
-          <!-- edit -->
-          <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <!-- edit -->
+           <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="editCategories">
               <div class="modal-content">
                 <div class="modal-header">
@@ -200,18 +201,16 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form action="edit" method="post">
+                <form action="editUser" method="post">
                   <div class="modal-body d-flex flex-column">
                     <label for="id">ID</label>
                     <input type="text" name="id" id="id" value="">
-                    <label for="categories_id"> Categories ID </label>
-                    <select name="categories_id" id="categories_id">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
-                    </select>
-                    <label for="item_name">Item Name</label>
-                    <input type="text" name="item_name" id="item_name" value="">
+                    <label for="">Password</label>
+                    <input type="password" name="password" placeholder="Password" pattern="(?=.*[a-zA-Z0-9]).{6,}" title="Mật khẩu có ít nhất 6 kí tự và không có kí tự đặc biệt!">
+                    <h4 class="err"><?= $err['password'] ?></h4>
+                    <label for="">Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" pattern="(?=.*[a-zA-Z0-9]).{6,}" required title="Mật khẩu có ít nhất 6 kí tự và không có kí tự đặc biệt!">
+                    <h4 class="err"><?= $err['confirm_password'] ?></h4>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -224,50 +223,42 @@
           <script>
             const Table = document.getElementById('example1');
             const IDEdit = document.getElementById('id');
-            const Categories = document.getElementById('categories_id');
-            const Item = document.getElementById('item_name');
 
             function edit(row) {
-              Table.rows[row]
               IDEdit.value = Table.rows[row].cells[0].innerText;
-              type = Table.rows[row].cells[1].innerText;
-              switch (type) {
-                case 'Nam':
-                  Categories.value = 1;
-                  break;
-                case 'Nữ':
-                  Categories.value = 2;
-                  break;
-                case 'Trẻ em':
-                  Categories.value = 3;
-                  break;
-              }
-              Item.value = Table.rows[row].cells[2].innerText;
             }
           </script>
           <!-- /.edit -->
           <!-- add -->
           <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="addCategories">
+            <div class="modal-dialog" role="addCategories">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Categories</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form action="add" method="post">
+                <form action="addUser" method="post">
                   <div class="modal-body d-flex flex-column">
-                    <!-- <label for="add_id">ID</label>
-                  <input type="text" name="id" id="add_id" value=""> -->
-                    <label for="categories_add"> Categories ID </label>
-                    <select name="categories_id" id="categories_add">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
-                    </select>
-                    <label for="add_name">Item Name</label>
-                    <input type="text" name="item_name" id="add_name" value="">
+                    <label for="">Email</label>
+                    <input type="email" name="email" placeholder="E-Mail" required>
+                    <h4 class="err"><?= $err['email'] ?></h4>
+                    <label for="">Password</label>
+                    <input type="password" name="password" placeholder="Password" pattern="(?=.*[a-zA-Z0-9]).{6,}" title="Mật khẩu có ít nhất 6 kí tự và không có kí tự đặc biệt!">
+                    <h4 class="err"><?= $err['password'] ?></h4>
+                    <label for="">Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" pattern="(?=.*[a-zA-Z0-9]).{6,}" required title="Mật khẩu có ít nhất 6 kí tự và không có kí tự đặc biệt!">
+                    <h4 class="err"><?= $err['confirm_password'] ?></h4>
+                    <label for="">Name</label>
+                    <input type="text" name="name" placeholder="FullName" required>
+                    <h4 class="err"><?= $err['name'] ?></h4>
+                    <label for="">Address</label>
+                    <input type="text" name="address" placeholder="Address" required>
+                    <h4 class="err"><?= $err['address'] ?></h4>
+                    <label for="">Phone</label>
+                    <input type="tel" name='phone' placeholder="PhoneNumber" pattern="^0[0-9]{9,10}$" required title="Không phải số điện thoại!">
+                    <h4 class="err"><?= $err['phone'] ?></h4>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -278,6 +269,66 @@
             </div>
           </div>
           <!-- /.add -->
+        </div>
+        <!-- /.container-fluid -->
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">User Admin Table with default features</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example1" class="table table-bordered table-striped">
+                    <!-- <button type="button" class="btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add Admin</button> -->
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Created Date</th>
+                        <th>Function</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($userAd as $one) : ?>
+                        <tr>
+                          <td><?= $one->id ?></td>
+                          <td><?= $one->email ?></td>
+                          <td><?= $one->password ?></td>
+                          <td><?= $one->name ?></td>
+                          <td><?= $one->address ?></td>
+                          <td><?= $one->phone ?></td>
+                          <td><?= $one->created ?></td>
+                          <!-- <td><a class="btn btn-danger btn-sm" href="delete?id=<?= $one->id ?>"><i class="fas fa-trash"></i></a></td> -->
+                        </tr>
+                      <?php endforeach ?>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Created Date</th>
+                        <th>Function</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
       </section>
@@ -321,13 +372,8 @@
         "autoWidth": false,
       });
       $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
         "responsive": true,
+        "autoWidth": false,
       });
     });
   </script>

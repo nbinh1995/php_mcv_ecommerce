@@ -237,6 +237,176 @@ class controller_UserController
       }
       $_SESSION = array();
       session_destroy();
-      return redirect('login');
+      return redirect('home');
    }
+
+   public function add(){
+      if (!isset($_SESSION)) {
+         session_start();
+     }
+     if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
+      $userDAO = new model_UserDAO(model_DbConnection::make());
+      $email_reg = '/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
+      $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
+      $phone_reg = '/^0[0-9]{9,10}$/';
+      $err = [
+         'stmt' => '',
+         'email' => '',
+         'password' => '',
+         'confirm_password' => '',
+         'name' => '',
+         'address' => '',
+         'phone' => ''
+      ];
+      // Validate email
+      if (empty(trim($_POST["email"]))) {
+         $err['email'] = "Nhập Email của bạn vào.";
+      } else {
+         $email = trim($_POST["email"]);
+         if (preg_match_all($email_reg, $email)) {
+            switch ($userDAO->existEmail($email)) {
+               case 0:
+                  $err['email'] = 'Email này đã được sử dụng.';
+                  break;
+               case -1:
+                  $err['stmt'] = 'Có lỗi xãy ra. Bạn hãy thực hiện đăng kí lại.';
+                  break;
+            }
+         } else $err['email'] = "Đây không phải là một Email.";
+      }
+
+      // Validate password
+      if (empty(trim($_POST["password"]))) {
+         $err['password'] = "Nhập password của bạn vào.";
+      } elseif (preg_match_all($pass_reg, trim($_POST["password"]))) {
+         $password = trim($_POST["password"]);
+      } else {
+         $err['password'] = "Password phải có ít nhất 6 kí tự và ko có kí tự đặt biệt nào.";
+      }
+
+      // Validate confirm password
+      if (empty(trim($_POST["confirm_password"]))) {
+         $err['confirm_password'] = "Nhập password của bạn vào.";
+      } else {
+         $confirm_password = trim($_POST["confirm_password"]);
+         if (empty($err['password']) && ($password != $confirm_password)) {
+            $err['confirm_password'] = "Password không giống nhau.";
+         }
+      }
+
+      // Validate name
+      if (empty(trim($_POST["name"]))) {
+         $err['name'] = "Nhập tên của bạn vào.";
+      }
+
+      // Validate address
+      if (empty(trim($_POST["address"]))) {
+         $err['address'] = "Nhập địa chỉ của bạn vào.";
+      }
+
+      // Validate phone
+      if (empty(trim($_POST["phone"]))) {
+         $err['phone'] = "Nhập số điện thoại của bạn vào.";
+      } else {
+         $phone = trim($_POST["phone"]);
+         if (!preg_match($phone_reg, $phone)) {
+            $err['phone'] = 'Không phải số điện thoại';
+         }
+      }
+
+      if (
+         empty($err['stmt']) && empty($err['email']) && empty($err['password']) &&
+         empty($err['confirm_password']) && empty($err['name'] && empty($err['address'])) && empty($err['phone'])
+      ) {
+         $userIs = new model_User(
+            trim($_POST['email']),
+            trim($_POST['password']),
+            trim($_POST["name"]),
+            trim($_POST['address']),
+            trim($_POST['phone'])
+         );
+         if ($userDAO->register($userIs)){
+            return redirect('adUser');
+         }else {  
+            $user = $userDAO->readCRUD();
+            $userAd = $userDAO->readAdCRUD();
+            $data = ['user'=>$user,'userAd'=>$userAd,'err'=>$err];
+            return view('admin/manager/managerUser',$data);}
+      }
+     } else {
+         return view('layout/404');
+     }
+   }
+
+   public function edit(){
+      if (!isset($_SESSION)) {
+         session_start();
+     }
+     if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
+      $userDAO = new model_UserDAO(model_DbConnection::make());
+      $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
+      $err = [
+         'stmt' => '',
+         'email' => '',
+         'password' => '',
+         'confirm_password' => '',
+         'name' => '',
+         'address' => '',
+         'phone' => ''
+      ];
+      // Validate password
+      if (empty(trim($_POST["password"]))) {
+         $err['password'] = "Nhập password của bạn vào.";
+      } elseif (preg_match_all($pass_reg, trim($_POST["password"]))) {
+         $password = trim($_POST["password"]);
+      } else {
+         $err['password'] = "Password phải có ít nhất 6 kí tự và ko có kí tự đặt biệt nào.";
+      }
+
+      // Validate confirm password
+      if (empty(trim($_POST["confirm_password"]))) {
+         $err['confirm_password'] = "Nhập password của bạn vào.";
+      } else {
+         $confirm_password = trim($_POST["confirm_password"]);
+         if (empty($err['password']) && ($password != $confirm_password)) {
+            $err['confirm_password'] = "Password không giống nhau.";
+         }
+      }
+      if (
+         empty($err['stmt']) && empty($err['email']) && empty($err['password']) &&
+         empty($err['confirm_password']) && empty($err['name'] && empty($err['address'])) && empty($err['phone'])
+      ){
+         if($userDAO->updatePassCRUD(trim($_POST['id']),$password)){
+            return redirect('adUser');
+         }else{
+            $err['stmt'] = 'Co loi xay ra.';
+            $user = $userDAO->readCRUD();
+            $userAd = $userDAO->readAdCRUD();
+            $data = ['user'=>$user,'userAd'=>$userAd,'err'=>$err];
+            return view('admin/manager/managerUser',$data);
+         } 
+      }else{
+         $user = $userDAO->readCRUD();
+         $userAd = $userDAO->readAdCRUD();
+         $data = ['user'=>$user,'userAd'=>$userAd,'err'=>$err];
+         return view('admin/manager/managerUser',$data);
+      }
+        
+     } else {
+         return view('layout/404');
+     }
+   }
+   public function delete(){
+      if (!isset($_SESSION)) {
+         session_start();
+     }
+     if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
+      $userDAO = new model_UserDAO(model_DbConnection::make());
+      $userDAO->deleteCRUD(trim($_GET['id']));
+         return redirect('adUser');
+     } else {
+         return view('layout/404');
+     }
+   }
+
 }

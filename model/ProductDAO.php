@@ -45,7 +45,8 @@ class model_ProductDAO{
         $statement->bindParam(5,$product->discount);
         $statement->bindParam(6,$product->isNew);
         $statement->bindParam(7,$product->isHot);
-        return $statement->execute();
+        if($statement->execute()) return $this->pdo->lastInsertId();
+        else return false;
     }
     public function updateCRUD(model_Product $product){
         $sql = "UPDATE `product`

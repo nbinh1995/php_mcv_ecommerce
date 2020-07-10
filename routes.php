@@ -13,6 +13,10 @@ $router->get('logout','controller_UserController@logout');
 $router->post('login','controller_UserController@login');
 $router->post('account','controller_UserController@changePass');
 $router->post('register','controller_UserController@register');
+/* control CRUD User*/
+$router->post('addUser','controller_UserController@add');
+$router->post('editUser','controller_UserController@edit');
+$router->get('deleteUser','controller_UserController@delete');
 /* control admin*/
 $router->get('dashboard', 'controller_AdminController@adminLogin');
 $router->post('dashboard', 'controller_AdminController@dashboard');
@@ -30,6 +34,6 @@ $router->post('addPro','controller_ProductController@add');
 $router->post('editPro','controller_ProductController@edit');
 $router->get('deletePro','controller_ProductController@delete');
 $router->post('addImgPro','controller_ProductController@addImg');
-$router->post('editImgPro','controller_ProductController@editImg');
 $router->get('deleteImgPro','controller_ProductController@deleteImg');
+
 ?>

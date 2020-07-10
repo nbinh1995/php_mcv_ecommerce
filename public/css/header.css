@@ -62,7 +62,6 @@ input:valid {
     align-items: center;
     position: relative;
 }
-
 .search{
    text-align: center;
 }
@@ -91,6 +90,9 @@ input:valid {
     text-align: right;
     padding-right: 1rem;
 }
+.logout{
+    display: none;
+}
 .menu ul{
     display: inline-flex;
 }
@@ -102,9 +104,7 @@ input:valid {
     font-size: 1rem;
     font-weight: 600;   
 }
-.logout{
-    display: none;
-}
+
 .menu a{
     color: #08080b;
 }
@@ -241,7 +241,11 @@ input:valid {
 .dropdown-content a{
     text-align: center;
 }
+.dropdown-content-mb .logout{
+    display: none;
 }
+}
+
 .block{
     display: block;
 }

@@ -59,7 +59,9 @@ class controller_AdminController
             $product = $productDAO->readCRUD();
             unset($productDAO);
             $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
-            $imgProduct = $imgProductDAO->readCRUD();
+            foreach($product as $img){
+                $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+            }
             unset($imgProductDAO);
             $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
             $categoriesDetail = $categoriesDetailDAO->readCRUD();
@@ -71,12 +73,25 @@ class controller_AdminController
         }
     }
     public function user()
-    {
+    {    $err = [
+        'stmt' => '',
+        'email' => '',
+        'password' => '',
+        'confirm_password' => '',
+        'name' => '',
+        'address' => '',
+        'phone' => ''
+        ];
         if (!isset($_SESSION)) {
             session_start();
         }
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
-            return view('admin/manager/managerUser');
+            $userDAO = new model_UserDAO(model_DbConnection::make());
+            $user = $userDAO->readCRUD();
+            $userAd = $userDAO->readAdCRUD();
+            unset($userDAO);
+            $data = ['user'=>$user,'userAd'=>$userAd,'err'=>$err];
+            return view('admin/manager/managerUser',$data);
         } else {
             return view('admin/login/login');
         }

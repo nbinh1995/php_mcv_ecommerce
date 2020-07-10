@@ -17,7 +17,7 @@ class model_imgProductDAO{
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_CLASS);
     }
 
     public function createCRUD(model_imgProduct $imgProduct){
@@ -48,6 +48,11 @@ class model_imgProductDAO{
         $statement->bindParam(1,$id);
         return $statement->execute();
     }
-
+    public function deleteProCRUD($id){
+        $sql = "DELETE FROM `img_product` WHERE `product_id` = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindParam(1,$id);
+        return $statement->execute();
+    }
 }
 ?>
