@@ -30,6 +30,7 @@
       position: absolute;
       right: 0;
       top: 0;
+      z-index: 10;
     }
   </style>
  
@@ -171,7 +172,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for ($i = 0; $i < count($product); $i++) : ?>
+                      <?php $len = count($product);
+                        for ($i = 0; $i < $len; $i++) : ?>
                         <tr>
                           <td><?= $product[$i]->id ?>
                           </td>
@@ -198,7 +200,7 @@
                                 <h3 class="card-title">Image <?= $product[$i]->name ?></h3>
                               </div>
                               <table class="example2" class="table">
-                                <div style="margin: 10px;"><button onclick="add(<?= $i+1 ?>)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add Image</button></div>
+                                <div style="margin: 10px;"><button onclick="add(this)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add Image</button></div>
                                 <thead>
                                   <tr>
                                     <th>ID</th>
@@ -227,8 +229,8 @@
                             <!--/ image -->
                           </td>
                           <td>
-                            <button type="button" onclick="action(<?= $i?>)" class="btn btn-success btn-sm mb-1"><i class="fas fa-images"></i> Images</button>
-                            <button type="button" onclick="edit(<?= $i+1?>)" class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <button type="button" onclick="action(this)" class="btn btn-success btn-sm mb-1"><i class="fas fa-images"></i> Images</button>
+                            <button type="button" onclick="edit(this)" class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
                             <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a>
                           </td>
                         </tr>
@@ -491,7 +493,7 @@
   </script>
    <script>
     const ImgTable = document.getElementsByClassName('img_table');
-    const Table = document.getElementById('example1');
+    // const Table = document.getElementById('example1');
     const IDEdit = document.getElementById('id');
     const Categories = document.getElementById('categories_detail_id');
     const Item = document.getElementById('item_name');
@@ -502,8 +504,8 @@
     const Hot = document.getElementById('isHot');
     //tab 
     function action(r) {
-      if (ImgTable[r].classList.contains('block')) {
-        ImgTable[r].classList.remove('block');
+      if (r.parentElement.parentElement.cells[8].children[0].classList.contains('block')) {
+        r.parentElement.parentElement.cells[8].children[0].classList.remove('block');
       } else {
         for (let i = 0; i < ImgTable.length; i++) {
           if (ImgTable[i].classList.contains('block')) {
@@ -511,28 +513,28 @@
             break;
           }
         }
-        ImgTable[r].classList.add('block');
+        r.parentElement.parentElement.cells[8].children[0].classList.add('block');
       }
     }
     // catch html input modal add image
     function add(rows) {
-      document.getElementById('Aproduct_idI').value = Table.rows[rows].cells[0].innerText;
+      document.getElementById('Aproduct_idI').value = rows.parentElement.parentElement.parentElement.parentElement.cells[0].innerText;
     }
     // catch html input modal edit
     function edit(row) {
-      IDEdit.value = Table.rows[row].cells[0].innerText;
-      temp = Table.rows[row].cells[1].innerText;
+      IDEdit.value = row.parentElement.parentElement.cells[0].innerText;
+      temp = row.parentElement.parentElement.cells[1].innerText;
       <?php foreach ($categoriesDetail as $type) : ?>
         if (temp === "<?= $type->item_name ?>") Categories.value = <?= $type->id ?>;
       <?php endforeach ?>
-      Item.value = Table.rows[row].cells[2].innerText;
-      Content.value = Table.rows[row].cells[3].innerText;
-      Price.value = Table.rows[row].cells[4].innerText;
-      Discount.value = Table.rows[row].cells[5].innerText;
-      $temp1 = Table.rows[row].cells[6].innerText;
+      Item.value = row.parentElement.parentElement.cells[2].innerText;
+      Content.value = row.parentElement.parentElement.cells[3].innerText;
+      Price.value = row.parentElement.parentElement.cells[4].innerText;
+      Discount.value = row.parentElement.parentElement.cells[5].innerText;
+      $temp1 = row.parentElement.parentElement.cells[6].innerText;
       if ($temp1 === 'No') News.value = 0;
       else News.value = 1;
-      $temp2 = Table.rows[row].cells[7].innerText;
+      $temp2 = row.parentElement.parentElement.cells[7].innerText;
       if ($temp2 === 'Yes') Hot.value = 1;
       else Hot.value = 0;
     }

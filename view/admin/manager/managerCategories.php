@@ -152,11 +152,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
+                      <?php foreach ($categoriesDetail as $categories) : ?>
                         <tr>
-                          <td><?= $categoriesDetail[$i]->id ?></td>
+                          <td><?= $categories->id ?></td>
                           <td><?php
-                              switch ($categoriesDetail[$i]->categories_id) {
+                              switch ($categories->categories_id) {
                                 case 1:
                                   echo 'Men';
                                   break;
@@ -168,11 +168,11 @@
                                   break;
                               }
                               ?></td>
-                          <td><?= $categoriesDetail[$i]->item_name ?></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="deleteCat?id=<?= $categoriesDetail[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                          <td><?= $categories->item_name ?></td>
+                          <td><button type="button" onclick="edit(this)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <a class="btn btn-danger btn-sm" href="deleteCat?id=<?= $categories->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
-                      <?php endfor ?>
+                      <?php endforeach ?>
                     </tbody>
                     <tfoot>
                       <tr>
@@ -222,14 +222,15 @@
             </div>
           </div>
           <script>
-            const Table = document.getElementById('example1');
+            // const Table = document.getElementById('example1');
             const IDEdit = document.getElementById('id');
             const Categories = document.getElementById('categories_id');
             const Item = document.getElementById('item_name');
 
             function edit(row) {
-              IDEdit.value = Table.rows[row].cells[0].innerText;
-              type = Table.rows[row].cells[1].innerText;
+             
+              IDEdit.value =  row.parentElement.parentElement.cells[0].innerText;
+              type =  row.parentElement.parentElement.cells[1].innerText;
               switch (type) {
                 case 'Men':
                   Categories.value = 1;
@@ -241,7 +242,7 @@
                   Categories.value = 3;
                   break;
               }
-              Item.value = Table.rows[row].cells[2].innerText;
+              Item.value =  row.parentElement.parentElement.cells[2].innerText;
             }
           </script>
           <!-- /.edit -->

@@ -156,19 +156,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for($i=0;$i<count($user);$i++) : ?>
+                      <?php foreach ($user as $use) : ?>
                         <tr>
-                          <td><?= $user[$i]->id ?></td>
-                          <td><?= $user[$i]->email ?></td>
-                          <td><?= $user[$i]->password ?></td>
-                          <td><?= $user[$i]->name ?></td>
-                          <td><?= $user[$i]->address ?></td>
-                          <td><?= $user[$i]->phone ?></td>
-                          <td><?= $user[$i]->created ?></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Change Pass</button>
-                            <a class="btn btn-danger btn-sm" href="deleteUser?id=<?= $user[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                          <td><?= $use->id ?></td>
+                          <td><?= $use->email ?></td>
+                          <td><?= $use->password ?></td>
+                          <td><?= $use->name ?></td>
+                          <td><?= $use->address ?></td>
+                          <td><?= $use->phone ?></td>
+                          <td><?= $use->created ?></td>
+                          <td>
+                            <button type="button" onclick="edit(this)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Change Pass</button>
+                            <a class="btn btn-danger btn-sm" href="deleteUser?id=<?= $use->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
-                      <?php endfor ?>
+                      <?php endforeach ?>
                     </tbody>
                     <tfoot>
                       <tr>
@@ -203,8 +204,8 @@
                 </div>
                 <form action="editUser" method="post">
                   <div class="modal-body d-flex flex-column">
-                    <label for="id">ID</label>
-                    <input type="text" name="id" id="id" value="">
+                    <!-- <label for="id">ID</label> -->
+                    <input type="text" name="id" id="id" value="" hidden>
                     <label for="">Password</label>
                     <input type="password" name="password" placeholder="Password" pattern="(?=.*[a-zA-Z0-9]).{6,}" title="Mật khẩu có ít nhất 6 kí tự và không có kí tự đặc biệt!">
                     <h4 class="err"><?= $err['password'] ?></h4>
@@ -225,7 +226,7 @@
             const IDEdit = document.getElementById('id');
 
             function edit(row) {
-              IDEdit.value = Table.rows[row].cells[0].innerText;
+              IDEdit.value = row.parentElement.parentElement.cells[0].innerText;
             }
           </script>
           <!-- /.edit -->

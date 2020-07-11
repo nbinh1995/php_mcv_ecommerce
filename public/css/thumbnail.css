@@ -1,125 +1,165 @@
+/*----------------------------html---------------------------------- 
+<div class="thumbnail">
+                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
+                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
+                <div class="status">
+                    <img src="public/images/new.png" alt="">
+                    <img src="public/images/hot.png" alt="">
+                </div>
+                <h1>Name Shoes</h1>
+                <h1>£480</h1>
+                <div class="overlay">
+                    <a href="single" class="btn">View Detail</a>
+                </div>
+                <div class="thumb-bottom">
+                    <ul class="ratings">
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                        <li class="star"></li>
+                    </ul>
+                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
+                </div>
+            </div>
+            */
 /*box  product*/
-.thumbnail{
-	width: 300px;
-	position: relative;
-	border-radius: 8px;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	background-color: white;
-    border: 1px solid #ddd;
-    cursor: pointer;
+@keyframes blink {
+  0% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
 }
-.thumbnail img{
-    width: 100%;
-    height: auto;
-    opacity: 1;
-    transition:  opacity 0.5s ease-in-out;
-    align-items: center;
+.thumbnail {
+  width: 250px;
+  position: relative; 
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: white;
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
-.thumbnail h1{
-    color: darkorange;
-    font-size: 1.5rem;
+.thumbnail img {
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  align-items: center;
 }
-.status{
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    box-shadow: #d5d5d5  -7px -5px 10px 10px;
+.thumbnail h1 {
+  color:  #ffaf02;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+.status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  justify-content: space-between;
+  animation: blink 1.5s;
+  animation-iteration-count: infinite;
+}
+.status img{
+  padding-right:2px;
 }
 
 /*Hover Effect thumbnail*/
-.thumbnail .overlay{
-	position: absolute;
-	top: 0;
-	right: 100%;
-	z-index: 100;
-	width: 100%;
-	height: 90%;
-	background: transparent;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	transition: 0.5s;
+.thumbnail .overlay {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  z-index: 100;
+  width: 100%;
+  height: 90%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
 }
-.thumbnail:hover .overlay{
-    right: 0;
-    
+.thumbnail:hover .overlay {
+  right: 0;
 }
-.thumbnail >img:nth-child(2){
-    position: absolute;
-    opacity: 0;
+.thumbnail > img:nth-child(2) {
+  position: absolute;
+  opacity: 0;
 }
-.thumbnail:hover >img:first-child{
-    opacity: 0;
+.thumbnail:hover > img:first-child {
+  opacity: 0;
 }
-.thumbnail:hover >img:nth-child(2){
-    opacity: 1;
+.thumbnail:hover > img:nth-child(2) {
+  opacity: 1;
 }
-.thumbnail .overlay:hover a{
-    opacity: 1;
-    padding: 1rem;
-    background: #000;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 0.9em;
+.thumbnail .overlay:hover a {
+  opacity: 1;
+  padding: 1rem;
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 0.9em;
 }
-.thumbnail .overlay:hover a:hover{
-    opacity: 1;
-    padding: 1rem;
-    background: #FFAF02;
-    transform: scale(1.1);
+.thumbnail .overlay:hover a:hover {
+  opacity: 1;
+  padding: 1rem;
+  background: #ffaf02;
+  transform: scale(1.1);
 }
-.thumb-bottom{
-    width: 100%;
-    height:10%;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    background-color: #000;
+.thumb-bottom {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  background-color: #000;
 }
-.thumb-bottom a{
-    margin: 0 auto;
-    color: #ddd;
+.thumb-bottom a {
+  margin: 0 auto;
+  color: #ddd;
 }
-.thumb-bottom a:hover{
-    color: #FFAF02;
-    transform: scale(0.9);
+.thumb-bottom a:hover {
+  color: #ffaf02;
+  transform: scale(0.9);
 }
 /*star*/
 .ratings {
-    list-style-type: none;
-    margin: 0;
-    padding: 0 0.5rem;
-    width: 50%;
-    height: 100%;
-    direction: rtl;
-    text-align: left;
-    background: #d5d5d5;
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  width: 50%;
+  height: 100%;
+  direction: rtl;
+  text-align: left;
+  background: #d5d5d5;
 }
-  
+
 .star {
-    position: relative;
-    line-height: 1.5rem;
-    display: inline-block;
-    transition: color 0.2s ease;
-    color: white;
+  position: relative;
+  line-height: 1.1rem;
+  display: inline-block;
+  transition: color 0.2s ease;
+  color: white;
 }
-  
+
 .star:before {
-    content: '\2605';
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1.5rem;
+  content: "\2605";
+  width: 1.1rem;
+  height: 1.1rem;
+  font-size: 1.1rem;
 }
-  
+
 .star:hover,
 .star.selected,
 .star:hover ~ .star,
-.star.selected ~ .star{
-    transition: color 0.8s ease;
-    color: black;
+.star.selected ~ .star {
+  transition: color 0.8s ease;
+  color:  #ffaf02;
 }

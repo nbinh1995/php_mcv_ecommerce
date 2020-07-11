@@ -26,7 +26,7 @@ class controller_UserController
    {
       $data = $this->menu();
       $userDAO = new model_UserDAO(model_DbConnection::make());
-      $email_reg = '/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
+      $email_reg = '/^[A-Za-z0-9]+[\.A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
       $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
       $phone_reg = '/^0[0-9]{9,10}$/';
       $err = [
@@ -130,7 +130,7 @@ class controller_UserController
    public function login()
    {
       $data = $this->menu();
-      $email_reg = '/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
+      $email_reg = '/^[A-Za-z0-9]+[\.A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
       $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
 
       $userDAO = new model_UserDAO(model_DbConnection::make());
@@ -246,7 +246,7 @@ class controller_UserController
      }
      if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
       $userDAO = new model_UserDAO(model_DbConnection::make());
-      $email_reg = '/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
+      $email_reg = '/^[A-Za-z0-9]+[\.A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
       $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
       $phone_reg = '/^0[0-9]{9,10}$/';
       $err = [
