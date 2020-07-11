@@ -158,13 +158,13 @@
                           <td><?php
                               switch ($categoriesDetail[$i]->categories_id) {
                                 case 1:
-                                  echo 'Nam';
+                                  echo 'Men';
                                   break;
                                 case 2:
-                                  echo 'Nữ';
+                                  echo 'Women';
                                   break;
                                 case 3:
-                                  echo 'Trẻ em';
+                                  echo 'Kid';
                                   break;
                               }
                               ?></td>
@@ -206,9 +206,9 @@
                     <input type="text" name="id" id="id" value="">
                     <label for="categories_id"> Categories ID </label>
                     <select name="categories_id" id="categories_id">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
+                      <option value="1">Men</option>
+                      <option value="2">Women</option>
+                      <option value="3">Kid</option>
                     </select>
                     <label for="item_name">Item Name</label>
                     <input type="text" name="item_name" id="item_name" value="">
@@ -231,13 +231,13 @@
               IDEdit.value = Table.rows[row].cells[0].innerText;
               type = Table.rows[row].cells[1].innerText;
               switch (type) {
-                case 'Nam':
+                case 'Men':
                   Categories.value = 1;
                   break;
-                case 'Nữ':
+                case 'Women':
                   Categories.value = 2;
                   break;
-                case 'Trẻ em':
+                case 'Kid':
                   Categories.value = 3;
                   break;
               }
@@ -261,9 +261,9 @@
                   <input type="text" name="id" id="add_id" value=""> -->
                     <label for="categories_add"> Categories ID </label>
                     <select name="categories_id" id="categories_add">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
+                      <option value="1">Men</option>
+                      <option value="2">Women</option>
+                      <option value="3">Kid</option>
                     </select>
                     <label for="add_name">Item Name</label>
                     <input type="text" name="item_name" id="add_name" value="">

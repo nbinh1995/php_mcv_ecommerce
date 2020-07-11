@@ -59,6 +59,7 @@ class controller_AdminController
             $product = $productDAO->readCRUD();
             unset($productDAO);
             $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+            $imgProduct = [];
             foreach($product as $img){
                 $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
             }

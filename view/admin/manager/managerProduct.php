@@ -28,11 +28,11 @@
     .block {
       display: block;
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      right: 0;
+      top: 0;
     }
   </style>
+ 
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -174,13 +174,31 @@
                       <?php for ($i = 0; $i < count($product); $i++) : ?>
                         <tr>
                           <td><?= $product[$i]->id ?>
+                          </td>
+                          <td><?php
+                              foreach ($categoriesDetail as $type) {
+                                if ($product[$i]->categories_detail_id === $type->id) {
+                                  echo $type->item_name;
+                                  break;
+                                }
+                              }
+                              ?></td>
+                          <td><?= $product[$i]->name ?></td>
+                          <td><?= $product[$i]->content ?></td>
+                          <td><?= $product[$i]->price ?></td>
+                          <td><?= $product[$i]->discount ?></td>
+                          <td><?php if ($product[$i]->isNew) echo 'Yes';
+                              else echo 'No'; ?></td>
+                          <td><?php if ($product[$i]->isHot) echo 'Yes';
+                              else echo 'No'; ?></td>
+                          <td style="position: relative;"><?= $product[$i]->created ?>
                             <!-- image -->
                             <div class="card img_table mx-auto">
                               <div class="card-header">
                                 <h3 class="card-title">Image <?= $product[$i]->name ?></h3>
                               </div>
                               <table class="example2" class="table">
-                                <div style="margin: 10px;"><button onclick="add(<?= $i + 1 ?>)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add Image</button></div>
+                                <div style="margin: 10px;"><button onclick="add(<?= $i+1 ?>)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addImg"><i class="fas fa-folder-plus"></i> Add Image</button></div>
                                 <thead>
                                   <tr>
                                     <th>ID</th>
@@ -208,27 +226,11 @@
                             </div>
                             <!--/ image -->
                           </td>
-                          <td><?php
-                              foreach ($categoriesDetail as $type) {
-                                if ($product[$i]->categories_detail_id === $type->id) {
-                                  echo $type->item_name;
-                                  break;
-                                }
-                              }
-                              ?></td>
-                          <td><?= $product[$i]->name ?></td>
-                          <td><?= $product[$i]->content ?></td>
-                          <td><?= $product[$i]->price ?></td>
-                          <td><?= $product[$i]->discount ?></td>
-                          <td><?php if ($product[$i]->isNew) echo 'Có';
-                              else echo 'Không'; ?></td>
-                          <td><?php if ($product[$i]->isHot) echo 'Có';
-                              else echo 'Không'; ?></td>
-                          <td><?= $product[$i]->created ?></td>
                           <td>
-                            <button type="button" onclick="action(<?= $i ?>)"  class="btn btn-success btn-sm mb-1"><i class="fas fa-images"></i> Images</button>
-                            <button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                            <button type="button" onclick="action(<?= $i?>)" class="btn btn-success btn-sm mb-1"><i class="fas fa-images"></i> Images</button>
+                            <button type="button" onclick="edit(<?= $i+1?>)" class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <a class="btn btn-danger btn-sm" href="deletePro?id=<?= $product[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a>
+                          </td>
                         </tr>
                       <?php endfor ?>
                     </tbody>
@@ -302,55 +304,6 @@
               </div>
             </div>
           </div>
-
-          <script>
-            const ImgTable = document.getElementsByClassName('img_table');
-            const Table = document.getElementById('example1');
-            const IDEdit = document.getElementById('id');
-            const Categories = document.getElementById('categories_detail_id');
-            const Item = document.getElementById('item_name');
-            const Content = document.getElementById('content');
-            const Price = document.getElementById('price');
-            const Discount = document.getElementById('discount');
-            const News = document.getElementById('isNew');
-            const Hot = document.getElementById('isHot');
-            //tab 
-            function action(row) {
-              if (ImgTable[row].classList.contains('block')) {
-                ImgTable[row].classList.remove('block');
-              } else {
-                for (let i = 0; i < ImgTable.length; i++) {
-                  if (ImgTable[i].classList.contains('block')) {
-                    ImgTable[i].classList.remove('block');
-                    break;
-                  }
-                }
-                ImgTable[row].classList.add('block');
-              }
-            }
-            // catch html input modal add image
-            function add(rows) {
-              document.getElementById('Aproduct_idI').value = Table.rows[rows].cells[0].innerText;
-            }
-            // catch html input modal edit
-            function edit(row) {
-              IDEdit.value = Table.rows[row].cells[0].innerText;
-              temp = Table.rows[row].cells[1].innerText;
-              <?php foreach ($categoriesDetail as $type) : ?>
-                if (temp === '<?= $type->item_name ?>') Categories.value = <?= $type->id ?>;
-              <?php endforeach ?>
-              Item.value = Table.rows[row].cells[2].innerText;
-              Content.value = Table.rows[row].cells[3].innerText;
-              Price.value = Table.rows[row].cells[4].innerText;
-              Discount.value = Table.rows[row].cells[5].innerText;
-              $temp1 = Table.rows[row].cells[6].innerText;
-              if ($temp1 === 'Không') News.value = 0;
-              else News.value = 1;
-              $temp2 = Table.rows[row].cells[7].innerText;
-              if ($temp2 === 'Có') Hot.value = 1;
-              else Hot.value = 0;
-            }
-          </script>
           <!-- /.edit -->
           <!-- add -->
           <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -535,6 +488,54 @@
         AimagesPreview(this, 'div.Agallery');
       });
     });
+  </script>
+   <script>
+    const ImgTable = document.getElementsByClassName('img_table');
+    const Table = document.getElementById('example1');
+    const IDEdit = document.getElementById('id');
+    const Categories = document.getElementById('categories_detail_id');
+    const Item = document.getElementById('item_name');
+    const Content = document.getElementById('content');
+    const Price = document.getElementById('price');
+    const Discount = document.getElementById('discount');
+    const News = document.getElementById('isNew');
+    const Hot = document.getElementById('isHot');
+    //tab 
+    function action(r) {
+      if (ImgTable[r].classList.contains('block')) {
+        ImgTable[r].classList.remove('block');
+      } else {
+        for (let i = 0; i < ImgTable.length; i++) {
+          if (ImgTable[i].classList.contains('block')) {
+            ImgTable[i].classList.remove('block');
+            break;
+          }
+        }
+        ImgTable[r].classList.add('block');
+      }
+    }
+    // catch html input modal add image
+    function add(rows) {
+      document.getElementById('Aproduct_idI').value = Table.rows[rows].cells[0].innerText;
+    }
+    // catch html input modal edit
+    function edit(row) {
+      IDEdit.value = Table.rows[row].cells[0].innerText;
+      temp = Table.rows[row].cells[1].innerText;
+      <?php foreach ($categoriesDetail as $type) : ?>
+        if (temp === "<?= $type->item_name ?>") Categories.value = <?= $type->id ?>;
+      <?php endforeach ?>
+      Item.value = Table.rows[row].cells[2].innerText;
+      Content.value = Table.rows[row].cells[3].innerText;
+      Price.value = Table.rows[row].cells[4].innerText;
+      Discount.value = Table.rows[row].cells[5].innerText;
+      $temp1 = Table.rows[row].cells[6].innerText;
+      if ($temp1 === 'No') News.value = 0;
+      else News.value = 1;
+      $temp2 = Table.rows[row].cells[7].innerText;
+      if ($temp2 === 'Yes') Hot.value = 1;
+      else Hot.value = 0;
+    }
   </script>
 </body>
 
