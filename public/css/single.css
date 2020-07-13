@@ -1,0 +1,150 @@
+.container-single {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 2rem 0;
+}
+.line {
+  width: 100%;
+  height: 50px;
+  background: #f7f7f7;
+  border: 1px solid #e6e6e6;
+  margin-bottom: 1rem;
+}
+.left-single {
+  width: 17%;
+  border-right: 1px solid #ddd;
+}
+.right-single {
+  width: 60%;
+  margin: 0 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.detail {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 1rem;
+  position: relative;
+}
+.img-detail {
+  width: 40%;
+}
+.text-detail {
+  width: 50%;
+  border-left: 1px solid #ddd;
+}
+.text-detail h1 {
+  text-transform: capitalize;
+  font-weight: 600;
+  font-style: italic;
+}
+.money {
+  margin: 1rem 0;
+  display: flex;
+}
+.money h3 {
+  padding: 0 0.5rem;
+}
+.money h3:first-child {
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: bold;
+  vertical-align: baseline;
+}
+.money h3:nth-child(2) {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffaf02;
+}
+.money h3:nth-child(3) {
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 80%;
+}
+
+.text-detail label {
+  margin: 0 0.5rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: bold;
+  vertical-align: baseline;
+}
+#amount {
+  width: 40px;
+  margin: 0 2rem;
+}
+#amount::-webkit-inner-spin-button {
+  opacity: 1;
+}
+.btn-sing {
+  display: flex;
+  background: #555;
+  color: #fff;
+  border-bottom: 4px solid #1d1c1c;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  margin: 1rem 0.5rem;
+}
+/*star*/
+.ratings {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  direction: rtl;
+  text-align: left;
+  background: #d5d5d5;
+  position: absolute;
+  bottom: 0;
+}
+.ratings li {
+  display: inline-block;
+}
+.star {
+  position: relative;
+  line-height: 1.1rem;
+  transition: color 0.2s ease;
+  color: white;
+}
+
+.star:before {
+  content: "\2605";
+  width: 1.1rem;
+  height: 1.1rem;
+  font-size: 1.1rem;
+}
+
+.star:hover,
+.star.selected,
+.star:hover ~ .star,
+.star.selected ~ .star {
+  transition: color 0.8s ease;
+  color: #ffaf02;
+}
+
+.intro h1 {
+  border-top: 1px solid #ddd;
+  font-weight: 400;
+  font-style: italic;
+  text-transform: capitalize;
+}
+.intro p {
+  opacity: 80%;
+  font-style: italic;
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.blink {
+  animation: blink 1.5s;
+  animation-iteration-count: infinite;
+}

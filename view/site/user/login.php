@@ -19,7 +19,7 @@ require_once 'view/layout/header.php';
             <a href="login"><input type="button" value="Register"></a>
         </div>
         <form class="login-wrap-right" action=""  method="post">
-            <h1>REGISTERED CUSTOMERS</h1>
+            <h1>LOGIN ACCOUNT</h1>
             <input type="email" name="email" placeholder="E-Mail" required>
             <h4 class="err"><?=$err['email']?></h4>
             <input type="password" name="password" placeholder="Password"

@@ -32,10 +32,10 @@
                         <a href="logout" class="logout <?php if (isset($_SESSION["loggedin"]) && 
                         $_SESSION["loggedin"] === true) echo 'block';?>">Logout</a>
                         <a href="login" class="<?php if (isset($_SESSION["loggedin"]) && 
-                        $_SESSION["loggedin"] === true) echo 'none';?>">Đăng nhập</a>
-                        <a href="register">Đăng ký</a>
-                        <a href="shop">Cửa Hàng</a>
-                        <a href="checkout">Giỏ Hàng</a>
+                        $_SESSION["loggedin"] === true) echo 'none';?>">Login</a>
+                        <a href="register">Sign in</a>
+                        <a href="shop">Store</a>
+                        <a href="checkout">Checkout</a>
                     </div>
                 </li>
             </ul>
@@ -47,9 +47,9 @@
                     <li><a href="logout" class="logout <?php if (isset($_SESSION["loggedin"]) && 
                     $_SESSION["loggedin"] === true) echo 'block';?>">Logout</a></li>
                     <li><a href="login" class="<?php if (isset($_SESSION["loggedin"]) && 
-                    $_SESSION["loggedin"] === true) echo 'none';?>">Đăng nhập</a></li>
-                    <li><a href="register">Đăng Ký</a></li> 
-                    <li><a href="shop">Cửa Hàng</a></li>       
+                    $_SESSION["loggedin"] === true) echo 'none';?>">Login</a></li>
+                    <li><a href="register">Sign in</a></li> 
+                    <li><a href="shop">Store</a></li>       
                     <li><a href="checkout"><img src="public/images/cart.png" alt=""></a></li>
                </ul>
            </div>
@@ -57,20 +57,20 @@
     </div>
     <div class="header-bot">
         <ul class="megamenu">
-            <li class="megapanel"><a href='home'>trang chủ</a></li>
+            <li class="megapanel"><a href='home'>Home</a></li>
             <?php foreach ($categories as $menu):?>
             <li class="dropdown megapanel col-mb-3-3">
                 <a href="javascript:void(0)" class="dropbtn"><?=$menu->item_name?></a>
                 <div class="dropdown-content">
                     <div class="col-1-4 col-mb-3-3">
-                        <h4>Đặc sắc</h4>
+                        <h4>features</h4>
                         <ul>
-                            <li><a href="shop">hàng mới về</a></li>
-                            <li><a href="shop">hàng bán chạy</a></li>                                      
+                            <li><a href="shop">new arrivals</a></li>
+                            <li><a href="shop">top sellers</a></li>                                      
                         </ul>
                     </div>
                     <div class="col-1-4 col-mb-3-3">
-                        <h4>Sản phẩm</h4>
+                        <h4>Products</h4>
                         <ul>
                             <?php foreach($categoriesDetail[$menu->id -1] as $item):?>
                             <li><a href="shop"><?= $item['item_name']?></a></li>

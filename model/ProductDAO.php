@@ -12,11 +12,18 @@ class model_ProductDAO{
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
-
-    public function readIdCRUD($id){
-        $sql = "Select * from `product` where `categories_detail_id` = ? and `is_delete` = 0";
+    public function readSingleCRUD($id){
+        $sql = "Select * from `product` where `id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_CLASS);
+        return $result[0];
+    }
+    public function readIdCRUD($category_id){
+        $sql = "Select * from `product` where `categories_detail_id` = ? and `is_delete` = 0";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindParam(1,$category_id);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -24,13 +31,13 @@ class model_ProductDAO{
         $sql = "Select * from `product` where `isHot` = 1 and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_CLASS);
     }
     public function readNewCRUD(){
         $sql = "Select * from `product` where `isNew` = 1 and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_CLASS);
     }
     public function createCRUD(model_Product $product)
     {

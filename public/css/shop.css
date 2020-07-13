@@ -1,5 +1,4 @@
 @import url('thumbnail.css');
-@import url('custom-checkbox.css');
 .container-shop{
     display: flex;
     width: 100%;
@@ -12,15 +11,6 @@
 .right-shop{
     width: 70%;
     margin: 0 1rem;
-}
-.left-shop ul h4{
-    color: #555;
-    font-size: 1rem;
-    padding: 13px 10px;
-    background: #F7F7F7;
-    border: 1px solid #E6E6E6;
-    text-transform: uppercase;
-    font-weight: 300;
 }
 
   /* toolbar pagination  */
@@ -65,7 +55,7 @@
 .main-shop{
     display: grid;
     margin: 1rem 0;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     grid-gap: 10px;
     justify-items: center;
 }

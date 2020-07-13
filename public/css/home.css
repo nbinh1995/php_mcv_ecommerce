@@ -1,4 +1,5 @@
 @import url('thumbnail.css');
+@import url('showHot.css');
 .js-banner-wrap{
     display: none;
     width: 80%;

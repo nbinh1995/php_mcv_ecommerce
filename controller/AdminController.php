@@ -103,7 +103,15 @@ class controller_AdminController
             session_start();
         }
         if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
-            return view('admin/manager/managerOrder');
+            $orderDAO = new model_OrderDAO(model_DbConnection::make());
+            $orderDetailDAO = new model_OrderDetailDAO(model_DbConnection::make());
+            $order = $orderDAO->readCRUD();
+            $orderDetail = [];
+            foreach($order as $detail){
+                $orderDetail[]= $orderDetailDAO->readIdCRUD($detail->id);
+            }
+            $data=['order'=>$order,'orderDetail'=> $orderDetail];
+            return view('admin/manager/managerOrder', $data);
         } else {
             return view('admin/login/login');
         }

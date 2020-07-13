@@ -5,6 +5,7 @@ class model_Order{
     public $name;
     public $address;
     public $phone;
+    public $delivery;
     public $total_order;
     public $status;
     public $create_order;

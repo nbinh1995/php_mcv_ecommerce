@@ -5,7 +5,15 @@
         <span class="checkmark"></span>
     </label>
 */
-
+.header-cate{
+    color: #555;
+    font-size: 1rem;
+    padding: 13px 10px;
+    background: #F7F7F7;
+    border: 1px solid #E6E6E6;
+    text-transform: uppercase;
+    font-weight: 300;
+}
 /* Customize the label (the checkbox) */
 .checkbox {
   display: block;

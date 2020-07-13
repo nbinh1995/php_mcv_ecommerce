@@ -2,47 +2,91 @@
 include 'core/autoload.php';
 
 class controller_SiteController
-{   public function menu(){
+{
+    public function menu()
+    {
         //menu
         $categoriesDAO = new model_CategoriesDAO(model_DbConnection::make());
         $categories =  $categoriesDAO->readCRUD();
         unset($categoriesDAO);
         $categoriesDetailDAO = new model_CategoriesDetailDAO(model_DbConnection::make());
         $categoriesDetail = [];
-        foreach($categories as $menu){
-            $categoriesDetail[]= $categoriesDetailDAO->readIdCRUD($menu->id);   
+        foreach ($categories as $menu) {
+            $categoriesDetail[] = $categoriesDetailDAO->readIdCRUD($menu->id);
         }
         unset($categories_detailDAO);
         $aboutDAO = new model_AboutDAO(model_DbConnection::make());
-        $about= $aboutDAO->readCRUD();
+        $about = $aboutDAO->readCRUD();
         unset($aboutDAO);
-        return ['categories'=>$categories,
-                'categoriesDetail'=>$categoriesDetail,
-                'about' => $about];
+        if(isset($_COOKIE["shopping_cart"]))
+			{
+				$cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                $cart_data = json_decode($cookie_data, true);
+            }else
+            {
+                $cart_data = array();
+            }
+            $count =0;
+            foreach($cart_data as $item){
+                $count += $item['product_amount'];
+            }
+        return [
+            'categories' => $categories,
+            'categoriesDetail' => $categoriesDetail,
+            'about' => $about,
+            'count' => $count
+        ];
     }
     public function home()
-    {   $data = $this->menu();
+    {
+        $data = $this->menu();
         //baner
         $bannerDAO = new model_BannerDAO(model_DbConnection::make());
         $banner = $bannerDAO->readCRUD();
-        $data['banner']=$banner;
+        $data['banner'] = $banner;
         unset($bannerDAO);
-        if(!isset($_SESSION)) { session_start(); }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
-        return view('site/home/home',$data);
+        $productDAO = new model_ProductDAO(model_DbConnection::make());
+        $productNew = $productDAO->readNewCRUD();
+        $data['productNew'] = $productNew;
+
+        $productHot = $productDAO->readHotCRUD();
+        $data['productHot'] = $productHot;
+        unset($productDAO);
+        
+        $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+        $imgProductNew = [];
+        foreach ($productNew as $img) {
+            $imgProductNew[] = $imgProductDAO->readIdCRUD($img->id);
+        }
+        $data['imgProductNew'] = $imgProductNew;
+
+        $imgProductHot = [];
+        foreach ($productHot as $img) {
+            $imgProductHot[] = $imgProductDAO->readIdCRUD($img->id);
+        }
+        $data['imgProductHot'] = $imgProductHot;
+        unset($imgProductDAO);
+        return view('site/home/home', $data);
     }
 
-    public function login(){
+    public function login()
+    {
         $data = $this->menu();
-        if(!isset($_SESSION)) { session_start(); }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
             return view('site/home/home');
@@ -52,32 +96,36 @@ class controller_SiteController
             'stmt' => '',
             'email' => '',
             'password' => ''
-         ];
-        $data['err']=$err;
-        return view('site/user/login',$data);
-    }
-    public function register(){
-        $data = $this->menu();
-        $err=[
-            'stmt'=>'',
-            'email'=>'',
-            'password'=>'',
-            'confirm_password'=>'',
-            'name'=>'',
-            'address'=>'',
-            'phone'=>''
         ];
-        if(!isset($_SESSION)) { session_start(); }
+        $data['err'] = $err;
+        return view('site/user/login', $data);
+    }
+    public function register()
+    {
+        $data = $this->menu();
+        $err = [
+            'stmt' => '',
+            'email' => '',
+            'password' => '',
+            'confirm_password' => '',
+            'name' => '',
+            'address' => '',
+            'phone' => ''
+        ];
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
         $data['err'] = $err;
-        return view('site/user/register',$data);
+        return view('site/user/register', $data);
     }
-    public function account(){
+    public function account()
+    {
         $data = $this->menu();
         $err = [
             'stmt' => '',
@@ -86,49 +134,87 @@ class controller_SiteController
             'old_pass' => '',
             'new_pass' => ''
         ];
-        $data['err']=$err;
-        if(!isset($_SESSION)) { session_start(); }
+        $data['err'] = $err;
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
-            return view('site/user/myaccount',$data);
+            return view('site/user/myaccount', $data);
             exit();
         }
-        return view('site/user/login',$data);   
-    } 
-    public function shop(){
-        $data = $this->menu();
-        if(!isset($_SESSION)) { session_start(); }
-        // Check already loged in
-        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
-            $user = $userDAO->readIdCRUD($_SESSION["id"]);
-            $data['user'] = $user;
-        }
-        return view('site/shop/shop',$data);
+        return view('site/user/login', $data);
     }
-    public function single(){
+    public function shop()
+    {
         $data = $this->menu();
-        if(!isset($_SESSION)) { session_start(); }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
+            unset($userDAO);
             $data['user'] = $user;
         }
-        return view('site/shop/single',$data);
+        $productDAO = new model_ProductDAO(model_DbConnection::make());
+        $product = $productDAO->readCRUD();
+        $data['product'] = $product;
+        unset($productDAO);
+        $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+        $imgProduct = [];
+        foreach ($product as $img) {
+            $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+        }
+        $data['imgProduct'] = $imgProduct;
+        return view('site/shop/shop', $data);
     }
-    public function checkout(){
+    public function single()
+    {
         $data = $this->menu();
-        if(!isset($_SESSION)) { session_start(); }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         // Check already loged in
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $userDAO =new model_UserDAO(model_DbConnection::make());
+            $userDAO = new model_UserDAO(model_DbConnection::make());
             $user = $userDAO->readIdCRUD($_SESSION["id"]);
             $data['user'] = $user;
         }
-        return view('site/shop/checkout',$data);
+        $productDAO = new model_ProductDAO(model_DbConnection::make());
+        $product = $productDAO->readSingleCRUD(trim($_GET['id']));
+        unset($productDAO);
+        $data['product']=$product;
+        $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+        $imgProduct = $imgProductDAO->readIdCRUD(trim($_GET['id']));
+        $data['imProduct'] = $imgProduct;
+        return view('site/shop/single', $data);
+    }
+    public function checkout()
+    {   
+        $data = $this->menu();
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        // Check already loged in
+        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            $userDAO = new model_UserDAO(model_DbConnection::make());
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
+            $data['user'] = $user;
+        }
+        if(isset($_COOKIE["shopping_cart"]))
+			{
+				$cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                $cart_data = json_decode($cookie_data, true);
+            }else
+            {
+                $cart_data = array();
+            }
+            $data['cart'] = $cart_data;
+        return view('site/shop/checkout', $data);
     }
 }

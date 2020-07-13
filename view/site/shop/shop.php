@@ -4,39 +4,9 @@ require_once 'view/layout/header.php';
 <link rel="stylesheet" href="public/css/shop.css">
 <div class="container-shop">
     <div class="left-shop">
-        <ul>
-            <h4>category</h4>
-            <li>
-                <label class="checkbox"> new arrival
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="checkbox">top seller
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="checkbox">men
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="checkbox">women
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="checkbox">kid
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-        </ul>
+        <?php
+            require_once 'view/layout/sidebar.php';
+        ?>
     </div>
     <div class="right-shop">
         <div class="toolbar">
@@ -64,213 +34,48 @@ require_once 'view/layout/header.php';
             </div>
         </div>
         <div class="main-shop">
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
+            <?php $lenProduct = count($product);
+            for ($i = 0; $i < $lenProduct; $i++) : ?>
+                <div class="thumbnail">
+                    <?php for ($j = 0; $j < count($imgProduct[$i]); $j++) : ?>
+                        <img src="<?= $imgProduct[$i][$j]->img ?>" alt="">
+                        <?php if (count($imgProduct[$i]) === 1) : ?>
+                            <img src="<?= $imgProduct[$i][$j]->img ?>" alt="">
+                        <?php endif ?>
+                    <?php endfor ?>
+
+                    <div class="status">
+                        <?php if ($product[$i]->isNew) : ?>
+                            <img src="public/images/new.png" alt="">
+                        <?php endif ?>
+                        <?php if ($product[$i]->isHot) : ?>
+                            <img src="public/images/hot.png" alt="">
+                        <?php endif ?>
+                    </div>
+                    <?php if ($product[$i]->discount != 0) : ?>
+                        <div class="discount">
+                            <div class="text-sale">
+                                <img src="public/images/sale.png" alt="">
+                                <h3><?= $product[$i]->discount ?>%</h3>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                    <h1><?= $product[$i]->name ?></h1>
+                    <h1><?php echo number_format($product[$i]->price, 0, '', ','); ?> vnđ</h1>
+                    <div class="overlay">
+                        <a href="single?id=<?= $product[$i]->id?>" class="btn">View Detail</a>
+                    </div>
+                    <div class="thumb-bottom">
+                        <ul class="ratings">
+                            <li class="star"></li>
+                            <li class="star"></li>
+                            <li class="star"></li>
+                            <li class="star"></li>
+                            <li class="star"></li>
+                        </ul>
+                    </div>
                 </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
-            <div class="thumbnail">
-                <img src="public/images/CONTINENTAL80_1.jpg" alt="">
-                <img src="public/images/CONTINENTAL80_2.jpg" alt="">
-                <div class="status">
-                    <img src="public/images/new.png" alt="">
-                    <img src="public/images/hot.png" alt="">
-                </div>
-                <h1>Name Shoes</h1>
-                <h1>£480</h1>
-                <div class="overlay">
-                    <a href="single" class="btn">View Detail</a>
-                </div>
-                <div class="thumb-bottom">
-                    <ul class="ratings">
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                        <li class="star"></li>
-                    </ul>
-                    <a href="#" class="btn"><i class="fas fa-plus"></i> Add To Cart</a>
-                </div>
-            </div>
+            <?php endfor ?>
         </div>
     </div>
 </div>

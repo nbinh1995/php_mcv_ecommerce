@@ -35,5 +35,9 @@ $router->post('editPro','controller_ProductController@edit');
 $router->get('deletePro','controller_ProductController@delete');
 $router->post('addImgPro','controller_ProductController@addImg');
 $router->get('deleteImgPro','controller_ProductController@deleteImg');
-
+/* control cart*/
+$router->post('addCart','controller_CartController@add');
+$router->get('clearCart','controller_CartController@clear');
+$router->get('removeCart','controller_CartController@remove');
+$router->post('orderCart','controller_CartController@order');
 ?>

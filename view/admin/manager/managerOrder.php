@@ -146,13 +146,19 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Categories ID</th>
-                        <th>Item Name</th>
+                        <th>USER ID</th>
+                        <th>Name</th>
+                        <th>ADDRESS</th>
+                        <th>PHONE</th>
+                        <th>DELIVERY</th>
+                        <th>TOTAL </th>
                         <th>Function</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
+                      <?php var_dump($order);
+                            var_dump($orderDetail);die; 
+                      for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
                         <tr>
                           <td><?= $categoriesDetail[$i]->id ?></td>
                           <td><?php
@@ -320,15 +326,15 @@
         "responsive": true,
         "autoWidth": false,
       });
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-      });
+      // $('#example2').DataTable({
+      //   "paging": true,
+      //   "lengthChange": false,
+      //   "searching": false,
+      //   "ordering": true,
+      //   "info": true,
+      //   "autoWidth": false,
+      //   "responsive": true,
+      // });
     });
   </script>
 </body>

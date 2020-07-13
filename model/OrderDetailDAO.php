@@ -22,7 +22,7 @@ class model_OrderDetailDAO{
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createCRUD(model_OrderDetail $order_detail)
+    public function createCRUD( $order_detail)
     {
         $sql = "INSERT INTO `order_detail`
         (`order_id`,`product_id`,`price`,`amount`,`total_detail`)

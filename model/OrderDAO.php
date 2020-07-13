@@ -1,5 +1,5 @@
 <?php
-class model_OrderDetailDAO{
+class model_OrderDAO{
     public $pdo;
 
     public function __construct($pdo)
@@ -21,18 +21,20 @@ class model_OrderDetailDAO{
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createCRUD(model_Order $order)
+    public function createCRUD($order)
     {
         $sql = "INSERT INTO `order` 
-                (`user_id`,`name`,`address`,`phone`,`total_order`) 
-                VALUES (?,?,?,?,?)";
+                (`user_id`,`name`,`address`,`phone`,`total_order`,`delivery`) 
+                VALUES (?,?,?,?,?,?)";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$order->user_id);
         $statement->bindParam(2,$order->name);
         $statement->bindParam(3,$order->address);
         $statement->bindParam(4,$order->phone);
         $statement->bindParam(5,$order->total_order);
-        return $statement->execute();
+        $statement->bindParam(6,$order->delivery);
+        if($statement->execute()) return $this->pdo->lastInsertId();
+        else return false;
     }
 
     public function updateCRUD(model_Order $order){
@@ -43,6 +45,7 @@ class model_OrderDetailDAO{
         `address` = ?,
         `phone` = ?,
         `total_order` = ?
+        `delivery` = ?
         WHERE `id` = ? and `is_delete` = 0";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$order->user_id);
@@ -50,7 +53,8 @@ class model_OrderDetailDAO{
         $statement->bindParam(3,$order->address);
         $statement->bindParam(4,$order->phone);
         $statement->bindParam(5,$order->total_order);
-        $statement->bindParam(6,$order->id);
+        $statement->bindParam(6,$order->delivery);
+        $statement->bindParam(7,$order->id);
         return $statement->execute();
     }
 
