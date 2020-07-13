@@ -15,7 +15,7 @@ function changeNew(element) {
       indexNew = 0;
     } else {
       arr[indexNew].style.display = 'flex';
-      indexNew--;
+      if(indexNew!=0)indexNew--;
     }
   }
 }
@@ -36,7 +36,7 @@ function changeHot(element) {
       indexHot = 0;
     } else {
       arr[indexHot].style.display = 'flex';
-      indexHot--;
+      if(indexHot != 0)indexHot--;
     }
   }
 }

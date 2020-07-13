@@ -2,9 +2,8 @@
 include 'core/autoload.php';
 class controller_CartController
 {
-
 	public function add()
-	{
+	{	
 		if (isset($_COOKIE["shopping_cart"])) {
 			$cookie_data = stripslashes($_COOKIE['shopping_cart']);
 			$cart_data = json_decode($cookie_data, true);
@@ -32,18 +31,19 @@ class controller_CartController
 		}
 		$item_data = json_encode($cart_data);
 		setcookie('shopping_cart', $item_data, time() + (86400 * 30));
-
+		$_SESSION['add_cart_success'] = 1;
 		return redirect('single?id=' . $_POST['product_id']);
 	}
 
 	public function clear()
 	{
 		setcookie("shopping_cart", "", time() - 3600);
+		$_SESSION['clear_cart_success'] = 1;
 		return redirect('checkout');
 	}
 
 	public function remove()
-	{
+	{	
 		$cookie_data = stripslashes($_COOKIE['shopping_cart']);
 		$cart_data = json_decode($cookie_data, true);
 		foreach ($cart_data as $keys => $values) {
@@ -51,6 +51,7 @@ class controller_CartController
 				unset($cart_data[$keys]);
 				$item_data = json_encode($cart_data);
 				setcookie("shopping_cart", $item_data, time() + (86400 * 30));
+				$_SESSION['remove_cart_success'] = 1;
 				return redirect('checkout');
 			}
 		}
@@ -97,5 +98,18 @@ class controller_CartController
 		if (!$err) {
 			$this->clear();
 		}
+	}
+
+	public function edit(){
+		if (!isset($_SESSION)) {
+            session_start();
+        }
+        if (isset($_SESSION["adLoggedin"]) && $_SESSION["adLoggedin"] === true) {
+			$orderDAO = new model_OrderDAO(model_DbConnection::make());
+			$orderDAO->updateStatus(trim($_POST['status']),trim($_POST['order_id']));
+			return redirect('adOrder');
+		}else {
+            return view('layout/404');
+        }
 	}
 }

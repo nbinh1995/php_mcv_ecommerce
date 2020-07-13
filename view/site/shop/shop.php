@@ -5,20 +5,21 @@ require_once 'view/layout/header.php';
 <div class="container-shop">
     <div class="left-shop">
         <?php
-            require_once 'view/layout/sidebar.php';
+        require_once 'view/layout/sidebar.php';
         ?>
     </div>
     <div class="right-shop">
-        <div class="toolbar">
+        <div class="line"></div>
+        <!-- <div class="toolbar">
             <div class="sort">
                 <label>Sort By</label>
                 <select>
-                    <option value="">
+                    <option value="-1">
                         Popularity </option>
-                    <option value="">
+                    <option value="0">
                         Price : High to Low </option>
-                    <option value="">
-                        Price : Low to High </option>
+                    <option type='submit' value="1">
+                        Price : Low to High</option>
                 </select>
                 <a href=""><img src="images/arrow2.gif" alt="" class="v-middle"></a>
             </div>
@@ -32,7 +33,7 @@ require_once 'view/layout/header.php';
                 <a href="#">6</a>
                 <a href="#">&raquo;</a>
             </div>
-        </div>
+        </div> -->
         <div class="main-shop">
             <?php $lenProduct = count($product);
             for ($i = 0; $i < $lenProduct; $i++) : ?>
@@ -63,7 +64,7 @@ require_once 'view/layout/header.php';
                     <h1><?= $product[$i]->name ?></h1>
                     <h1><?php echo number_format($product[$i]->price, 0, '', ','); ?> vnđ</h1>
                     <div class="overlay">
-                        <a href="single?id=<?= $product[$i]->id?>" class="btn">View Detail</a>
+                        <a href="single?id=<?= $product[$i]->id ?>" class="btn">View Detail</a>
                     </div>
                     <div class="thumb-bottom">
                         <ul class="ratings">

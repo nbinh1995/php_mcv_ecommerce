@@ -11,10 +11,10 @@
                 <?php foreach ($categories as $menu):?>
                 <div class="ft-categories">
                     <h4><?=$menu->item_name?></h4>
-                    <li><a href="shop"><?=$menu->item_name?>'s new arrival</a></li>
-                    <li><a href="shop"><?=$menu->item_name?>'s top sellers</a></li>       
+                    <li><a href="shop?cate=new<?=$menu->item_name?>"><?=$menu->item_name?>'s new arrival</a></li>
+                    <li><a href="shop?cate=hot<?=$menu->item_name?>"><?=$menu->item_name?>'s top sellers</a></li>       
                     <?php foreach($categoriesDetail[$menu->id -1] as $item):?>
-                    <li><a href="shop"><?= $item['item_name']?></a></li>
+                    <li><a href="shop?cate=<?= $item['id']?>"><?= $item['item_name']?></a></li>
                     <?php endforeach?>
                 </div>
                 <?php endforeach?>  

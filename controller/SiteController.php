@@ -1,11 +1,9 @@
 <?php
 include 'core/autoload.php';
-
 class controller_SiteController
 {
     public function menu()
     {
-        //menu
         $categoriesDAO = new model_CategoriesDAO(model_DbConnection::make());
         $categories =  $categoriesDAO->readCRUD();
         unset($categoriesDAO);
@@ -162,7 +160,147 @@ class controller_SiteController
             $data['user'] = $user;
         }
         $productDAO = new model_ProductDAO(model_DbConnection::make());
+        $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());
+        if(isset($_GET['cate'])){
+            
+            switch(trim($_GET['cate'])){
+                case 'newmen':
+                    $product = $productDAO->readNewMen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'newwomen':
+                    $product = $productDAO->readNewWomen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'newkid':
+                    $product = $productDAO->readNewKid();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'hotmen':
+                    $product = $productDAO->readHotMen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'hotwomen':
+                    $product = $productDAO->readHotWomen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'hotkid':
+                    $product = $productDAO->readHotKid();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'new':
+                    $product = $productDAO->readNewCRUD();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'hot':
+                    $product = $productDAO->readHotCRUD();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'men':
+                    $product = $productDAO->readMen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'women':
+                    $product = $productDAO->readWomen();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                case 'kid':
+                    $product = $productDAO->readKid();
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+                break;
+                default:
+                    $product = $productDAO->readIdCRUD(trim($_GET['cate']));
+                    $data['product'] = $product;
+                    $imgProduct = [];
+                    foreach ($product as $img) {
+                        $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+                    }
+                    $data['imgProduct'] = $imgProduct;
+            }
+        }else{       
         $product = $productDAO->readCRUD();
+        $data['product'] = $product;
+        $imgProduct = [];
+        foreach ($product as $img) {
+            $imgProduct[] = $imgProductDAO->readIdCRUD($img->id);
+        }
+        $data['imgProduct'] = $imgProduct;
+        }
+        unset($productDAO);
+        unset($imgProductDAO);
+        return view('site/shop/shop', $data);
+    }
+   
+
+    public function shopSearch(){
+        $data = $this->menu();
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        // Check already loged in
+        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            $userDAO = new model_UserDAO(model_DbConnection::make());
+            $user = $userDAO->readIdCRUD($_SESSION["id"]);
+            unset($userDAO);
+            $data['user'] = $user;
+        }
+        $productDAO = new model_ProductDAO(model_DbConnection::make());
+        $product = $productDAO->readsearch(trim($_GET['search']));
         $data['product'] = $product;
         unset($productDAO);
         $imgProductDAO = new model_imgProductDAO(model_DbConnection::make());

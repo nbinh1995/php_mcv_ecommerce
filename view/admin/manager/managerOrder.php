@@ -142,7 +142,6 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped">
-                    <caption><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add"><i class="fas fa-folder-plus"></i> Add</button></caption>
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -151,42 +150,136 @@
                         <th>ADDRESS</th>
                         <th>PHONE</th>
                         <th>DELIVERY</th>
-                        <th>TOTAL </th>
+                        <th>TOTAL ORDER</th>
+                        <th>STATUS</th>
                         <th>Function</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php var_dump($order);
-                            var_dump($orderDetail);die; 
-                      for ($i = 0; $i < count($categoriesDetail); $i++) : ?>
+                      <?php $i = 0; $total= 0;
+                      foreach ($order as $item) : ?>
                         <tr>
-                          <td><?= $categoriesDetail[$i]->id ?></td>
-                          <td><?php
-                              switch ($categoriesDetail[$i]->categories_id) {
-                                case 1:
-                                  echo 'Nam';
+                          <td><?= $item->id ?></td>
+                          <td><?= $item->user_id ?></td>
+                          <td><?= $item->name ?></td>
+                          <td><?= $item->address ?></td>
+                          <td><?= $item->phone ?></td>
+                          <td><?= $item->delivery ?></td>
+                          <td><?= $item->total_order ?></td>
+                          <td><?php switch($item->status){
+                                  case 0:
+                                    echo 'Doing';
                                   break;
-                                case 2:
-                                  echo 'Nữ';
+                                  case 1:
+                                    $total+=$item->total_order;
+                                    echo 'Complete';
                                   break;
-                                case 3:
-                                  echo 'Trẻ em';
+                                  case 2:
+                                    echo 'Cancel';
                                   break;
-                              }
-                              ?></td>
-                          <td><?= $categoriesDetail[$i]->item_name ?></td>
-                          <td><button type="button" onclick="edit(<?= $i + 1 ?>)" class="btn btn-info btn-sm " data-toggle="modal" data-target="#edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                            <a class="btn btn-danger btn-sm" href="delete?id=<?= $categoriesDetail[$i]->id ?>"><i class="fas fa-trash"></i> Delete</a></td>
+                          } ?>     
+                          <div class="modal fade" id="change<?= $i?>">
+                          <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Status Order</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <form action="editStatus" method="post">
+                              <div class="modal-body">
+                                <input type="hidden" name="order_id" value="<?=$item->id ?>">
+                                <label for="status"></label>
+                                <select name="status" id="status" value='<?=$item->status?>'>
+                                    <option value="0">Doing</option>
+                                    <option value="1">Complete</option>
+                                    <option value="2">Cancel</option>
+                                </select>
+                              </div>
+                              <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                              </div>
+                              </form>
+                            </div>
+                            <!-- /.modal-content -->
+                          </div>
+                          <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                            <div class="modal fade" id="detail<?= $i ?>">
+                              <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title">Detail Order</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body table-responsive">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>ORDER ID</th>
+                                          <th>PRODUCT ID</th>
+                                          <th>PRODUCT NAME</th>
+                                          <th>PRODUCT IMAGE</th>
+                                          <th>ORIGINAL PRICE (VND)</th>
+                                          <th>DISCOUNT (%)</th>
+                                          <th>REAL PRICE (VND)</th>
+                                          <th>AMOUNT</th>
+                                          <th>TOTAL DETAIL</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <?php foreach($orderDetail[$i] as $item):?>
+                                          <tr>
+                                            <td><?=$item->order_id?></td>
+                                            <td><?=$item->product_id?></td>
+                                            <td><?=$item->name?></td>
+                                            <td> <img src="<?=$item->img?>" alt="" style="width: 100px;"> </td>
+                                            <td><?=$item->originalPrice?></td>
+                                            <td><?=$item->discount?></td>
+                                            <td><?=$item->realPrice?></td>
+                                            <td><?=$item->amount?></td>
+                                            <td><?=$item->total_detail?></td>
+                                          </tr>
+                                          <?php endforeach?>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                  </div>
+                                </div>
+                                <!-- /.modal-content -->
+                              </div>
+                              <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+                          </td>
+                          <td><button type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#detail<?= $i ?>"><i class="fas fa-pencil-alt"></i> Detail</button>
+                          <button type="button" class="btn btn-success btn-sm " data-toggle="modal" data-target="#change<?= $i ?>"><i class="fas fa-pencil-alt"></i> Change Status</button></td>
                         </tr>
-                      <?php endfor ?>
+                        <?php $i += 1; ?>
+                      <?php endforeach ?>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>ID</th>
-                        <th>Categories ID</th>
-                        <th>Item Name</th>
+                        <th>USER ID</th>
+                        <th>Name</th>
+                        <th>ADDRESS</th>
+                        <th>PHONE</th>
+                        <th>DELIVERY</th>
+                        <th>TOTAL ORDER</th>
+                        <th>STATUS</th>
+                        <th>Function</th>
                       </tr>
                     </tfoot>
+                    <h3>Total: <?php echo number_format($total,0,'',','); ?> VND </h3>
                   </table>
                 </div>
                 <!-- /.card-body -->
@@ -196,94 +289,6 @@
             <!-- /.col -->
           </div>
           <!-- /.row -->
-          <!-- edit -->
-          <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="editCategories">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Categories</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form action="edit" method="post">
-                  <div class="modal-body d-flex flex-column">
-                    <label for="id">ID</label>
-                    <input type="text" name="id" id="id" value="">
-                    <label for="categories_id"> Categories ID </label>
-                    <select name="categories_id" id="categories_id">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
-                    </select>
-                    <label for="item_name">Item Name</label>
-                    <input type="text" name="item_name" id="item_name" value="">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <script>
-            const Table = document.getElementById('example1');
-            const IDEdit = document.getElementById('id');
-            const Categories = document.getElementById('categories_id');
-            const Item = document.getElementById('item_name');
-
-            function edit(row) {
-              Table.rows[row]
-              IDEdit.value = Table.rows[row].cells[0].innerText;
-              type = Table.rows[row].cells[1].innerText;
-              switch (type) {
-                case 'Nam':
-                  Categories.value = 1;
-                  break;
-                case 'Nữ':
-                  Categories.value = 2;
-                  break;
-                case 'Trẻ em':
-                  Categories.value = 3;
-                  break;
-              }
-              Item.value = Table.rows[row].cells[2].innerText;
-            }
-          </script>
-          <!-- /.edit -->
-          <!-- add -->
-          <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="addCategories">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Categories</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form action="add" method="post">
-                  <div class="modal-body d-flex flex-column">
-                    <!-- <label for="add_id">ID</label>
-                  <input type="text" name="id" id="add_id" value=""> -->
-                    <label for="categories_add"> Categories ID </label>
-                    <select name="categories_id" id="categories_add">
-                      <option value="1">Nam</option>
-                      <option value="2">Nữ</option>
-                      <option value="3">Trẻ em</option>
-                    </select>
-                    <label for="add_name">Item Name</label>
-                    <input type="text" name="item_name" id="add_name" value="">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!-- /.add -->
         </div>
         <!-- /.container-fluid -->
       </section>

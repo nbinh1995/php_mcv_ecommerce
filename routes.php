@@ -6,6 +6,7 @@ $router->get('login', 'controller_SiteController@login');
 $router->get('register', 'controller_SiteController@register');
 $router->get('account', 'controller_SiteController@account');
 $router->get('shop', 'controller_SiteController@shop');
+$router->get('shopSearch', 'controller_SiteController@shopSearch');
 $router->get('single', 'controller_SiteController@single');
 $router->get('checkout', 'controller_SiteController@checkout');
 // control Users
@@ -40,4 +41,5 @@ $router->post('addCart','controller_CartController@add');
 $router->get('clearCart','controller_CartController@clear');
 $router->get('removeCart','controller_CartController@remove');
 $router->post('orderCart','controller_CartController@order');
+$router->post('editStatus','controller_CartController@edit')
 ?>

@@ -3,7 +3,7 @@ include 'core/autoload.php';
 class controller_UserController
 {
    public function menu()
-   {
+   { 
       //menu
       $categoriesDAO = new model_CategoriesDAO(model_DbConnection::make());
       $categories =  $categoriesDAO->readCRUD();
@@ -23,7 +23,7 @@ class controller_UserController
    }
 
    function register()
-   {
+   {   
       $data = $this->menu();
       $userDAO = new model_UserDAO(model_DbConnection::make());
       $email_reg = '/^[A-Za-z0-9]+[\.A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
@@ -108,6 +108,7 @@ class controller_UserController
 
          if ($userDAO->register($user)) {
             $data['err'] = $err;
+            $_SESSION['reg_success'] = 1;
             if (!isset($_SESSION)) {
                session_start();
             }
@@ -132,7 +133,7 @@ class controller_UserController
       $data = $this->menu();
       $email_reg = '/^[A-Za-z0-9]+[\.A-Za-z0-9]*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)$/';
       $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
-
+     
       $userDAO = new model_UserDAO(model_DbConnection::make());
       $user = new model_User();
       // Define variables and initialize with empty values
@@ -163,6 +164,7 @@ class controller_UserController
       if (empty($err['email']) && empty($err['password'])) {
          switch ($userDAO->login($user)) {
             case 1:
+               $_SESSION['login_success'] = 1;
                return redirect('home');
                break;
             case 0:
@@ -185,7 +187,7 @@ class controller_UserController
    }
 
    public function changePass()
-   {
+   {   
       $data = $this->menu();
       $pass_reg = '/^[a-zA-Z0-9]{6,}$/';
       $userDAO = new model_UserDAO(model_DbConnection::make());
@@ -216,6 +218,7 @@ class controller_UserController
             if ($user->password === md5($old_pass)) {
                $user->password = $new_pass;
                if ($userDAO->changePass($user)) {
+                  $_SESSION['change_success'] = 1;
                   $this->logout();
                   exit();
                } else {
@@ -237,6 +240,7 @@ class controller_UserController
       }
       $_SESSION = array();
       session_destroy();
+      $_SESSION['logout_success'] = 1;
       return redirect('home');
    }
 

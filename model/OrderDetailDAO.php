@@ -7,7 +7,7 @@ class model_OrderDetailDAO{
         $this->pdo = $pdo;
     }
     public function readCRUD($id){
-        $sql = "Select * from `billdetail` where `order_id` = ? `is_delete` = 0";
+        $sql = "Select * from `billdetail` where `order_id` = ? and `is_delete` = 0 group by id";
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(1,$id);
         $statement->execute();

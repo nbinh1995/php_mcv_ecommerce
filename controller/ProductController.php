@@ -1,12 +1,9 @@
 <?php
 include 'core/autoload.php';
-
 class controller_ProductController
 {
-    
     public function uploadImage()
     {
-        var_dump($_FILES);
         $target_dir = "public/images/";
         $file_name = $_FILES['fileToUpload']['name'];
         $file_size = $_FILES['fileToUpload']['size'];
